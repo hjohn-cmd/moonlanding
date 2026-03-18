@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KONVOLUTT // PRUNARIU-61</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .letter {
+    width: 148mm;
+    min-height: 210mm;
+    background: #0a0a08;
+    color: #d8d8c4;
+    padding: 14mm 13mm 12mm;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #2a2a22;
+  }
+
+  /* Background texture lines */
+  .letter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255,255,220,0.012) 3px,
+      rgba(255,255,220,0.012) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* Red accent line top */
+  .letter::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8a0000, #cc0000, #8a0000, transparent);
+  }
+
+  /* CORNER BRACKETS */
+  .corner { position: absolute; width: 14px; height: 14px; }
+  .corner.tl { top: 7mm; left: 7mm; border-top: 1px solid #cc0000; border-left: 1px solid #cc0000; }
+  .corner.tr { top: 7mm; right: 7mm; border-top: 1px solid #cc0000; border-right: 1px solid #cc0000; }
+  .corner.bl { bottom: 7mm; left: 7mm; border-bottom: 1px solid #cc0000; border-left: 1px solid #cc0000; }
+  .corner.br { bottom: 7mm; right: 7mm; border-bottom: 1px solid #cc0000; border-right: 1px solid #cc0000; }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    border-bottom: 1px solid #222;
+    padding-bottom: 6mm;
+    margin-bottom: 6mm;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #4a0000, transparent);
+  }
+
+  .org-label {
+    font-size: 6.5pt;
+    letter-spacing: 3px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 3mm;
+    display: block;
+  }
+
+  .op-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28pt;
+    letter-spacing: 5px;
+    color: #e8e8d0;
+    line-height: 1;
+    margin-bottom: 1mm;
+  }
+
+  .op-title span { color: #cc0000; }
+
+  .op-sub {
+    font-size: 6pt;
+    letter-spacing: 3px;
+    color: #555;
+    text-transform: uppercase;
+  }
+
+  /* CLASSIFIED STAMP — diagonal */
+  .stamp {
+    position: absolute;
+    top: 18mm;
+    right: 10mm;
+    border: 2px solid #cc0000;
+    color: #cc0000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11pt;
+    letter-spacing: 4px;
+    padding: 2px 7px;
+    transform: rotate(14deg);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* META ROW */
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 6pt;
+    letter-spacing: 1.5px;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 6mm;
+    padding-bottom: 4mm;
+    border-bottom: 1px dashed #1e1e1e;
+  }
+
+  /* BODY TEXT */
+  .body-text {
+    font-size: 8.5pt;
+    line-height: 1.75;
+    color: #aaa;
+    margin-bottom: 6mm;
+  }
+
+  .body-text .highlight { color: #d8d8c4; }
+  .body-text .green { color: #00cc33; }
+  .body-text .red { color: #cc0000; }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 5mm 0;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1e1e1e;
+  }
+  .divider span {
+    font-size: 6pt;
+    letter-spacing: 3px;
+    color: #444;
+    text-transform: uppercase;
+  }
+
+  /* CODE BOX */
+  .code-box {
+    border: 1px solid #2a2a1a;
+    background: #050504;
+    padding: 6mm 8mm;
+    text-align: center;
+    position: relative;
+    margin-bottom: 6mm;
+  }
+
+  .code-box::before {
+    content: 'OVERSTYRINGSKODE // FASE 3';
+    position: absolute;
+    top: -8px; left: 50%;
+    transform: translateX(-50%);
+    background: #050504;
+    padding: 0 6px;
+    font-size: 6pt;
+    letter-spacing: 2px;
+    color: #cc0000;
+    white-space: nowrap;
+  }
+
+  .code-label {
+    font-size: 6.5pt;
+    letter-spacing: 3px;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 3mm;
+    display: block;
+  }
+
+  .code-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32pt;
+    letter-spacing: 10px;
+    color: #00cc33;
+    text-shadow: 0 0 20px rgba(0, 204, 51, 0.4);
+    display: block;
+    margin-bottom: 2mm;
+  }
+
+  .code-note {
+    font-size: 6.5pt;
+    letter-spacing: 1.5px;
+    color: #444;
+  }
+
+  /* SHOTS BOX */
+  .shots-box {
+    border: 1px solid #1e1e0e;
+    background: #080806;
+    padding: 4mm 6mm;
+    margin-bottom: 6mm;
+    display: flex;
+    align-items: center;
+    gap: 5mm;
+  }
+
+  .shots-icon {
+    font-size: 22pt;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  .shots-text {
+    font-size: 7.5pt;
+    line-height: 1.6;
+    color: #888;
+  }
+
+  .shots-text strong {
+    color: #d8d8c4;
+    display: block;
+    font-size: 8pt;
+    letter-spacing: 1px;
+    margin-bottom: 1mm;
+  }
+
+  /* FOOTER */
+  .footer {
+    position: absolute;
+    bottom: 10mm;
+    left: 13mm; right: 13mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 5.5pt;
+    letter-spacing: 1.5px;
+    color: #333;
+    text-transform: uppercase;
+    border-top: 1px solid #161616;
+    padding-top: 3mm;
+  }
+
+  /* MOON graphic — subtle */
+  .moon-bg {
+    position: absolute;
+    bottom: -30mm;
+    right: -20mm;
+    width: 70mm;
+    height: 70mm;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #1a1a14, #0a0a08);
+    border: 1px solid #1e1e16;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* PRINT STYLES */
+  @media print {
+    @page { size: A5; margin: 0; }
+    body { background: none; margin: 0; }
+    .print-btn { display: none; }
+    .moon-bg { display: none; }
+    .letter::before { display: none; }
+    .letter {
+      border: none;
+      width: 148mm;
+      min-height: 210mm;
+      page-break-after: always;
+      background: #ffffff !important;
+      color: #111 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .org-label { color: #555 !important; }
+    .op-title { color: #111 !important; }
+    .op-title span { color: #aa0000 !important; }
+    .op-sub { color: #666 !important; }
+    .stamp { color: #cc0000 !important; border-color: #cc0000 !important; opacity: 0.2 !important; }
+    .meta { color: #666 !important; border-bottom-color: #ccc !important; }
+    .body-text { color: #333 !important; }
+    .body-text .highlight { color: #111 !important; }
+    .body-text .red { color: #aa0000 !important; }
+    .divider::before, .divider::after { background: #ccc !important; }
+    .divider span { color: #888 !important; }
+    .code-box { border-color: #bbb !important; background: #f4f4ee !important; }
+    .code-box::before { color: #aa0000 !important; background: #f4f4ee !important; }
+    .code-label { color: #777 !important; }
+    .code-value { color: #006622 !important; text-shadow: none !important; }
+    .code-note { color: #888 !important; }
+    .shots-box { border-color: #ccc !important; background: #f8f8f4 !important; }
+    .shots-text { color: #444 !important; }
+    .shots-text strong { color: #111 !important; }
+    .footer { color: #888 !important; border-top-color: #ccc !important; }
+    .corner { border-color: #aa0000 !important; }
+    .header::after { background: linear-gradient(90deg, transparent, #aa0000, transparent) !important; }
+    .letter::after { background: linear-gradient(90deg, transparent, #aa0000, transparent) !important; }
+  }
+
+  /* Print button — hidden when printing */
+  .print-btn {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: #cc0000;
+    color: #000;
+    border: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 12px 22px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    z-index: 100;
+  }
+  .print-btn:hover { background: #ff2222; }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">▶ PRINT A5</button>
+
+<div class="letter">
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <div class="moon-bg"></div>
+  <div class="stamp">CLASSIFIED</div>
+
+  <div class="header">
+    <span class="org-label">Directorate of Extraterrestrial Ambitions // București Station</span>
+    <div class="op-title">OPERATION <span>MOON</span> LANDING</div>
+    <div class="op-sub">Programul Spațial Român // Feltordre 02</div>
+  </div>
+
+  <div class="meta">
+    <span>Til: Kosmonaut-gruppe (felt)</span>
+    <span>Protokoll: PRUNARIU-81</span>
+    <span>01.05 // 12:00</span>
+  </div>
+
+  <div class="body-text">
+    Utmerket. Den verbale krypteringsnøkkelen er levert med iskald overbevisning. <span class="highlight">Deep Cover er opprettholdt. Ingeniøren er tilfreds.</span>
+    <br><br>
+    Nedenfor finner dere overstyringskoden som låser opp resten av <span class="highlight">Flight Manualen</span> — inkludert navigasjonsdata og missions-mål. Tast koden inn i systemet på mobilenheten deres.
+    <br><br>
+    Etter at koden er tastet inn: <span class="highlight">gjennomfør minst 4 av de 6 oppdragsmålene</span>, og send deretter den angitte meldingen til Mission Control via SMS for å motta koordinater til oppskytningsrampen.
+  </div>
+
+  <div class="divider"><span>Overstyringskode</span></div>
+
+  <div class="code-box">
+    <span class="code-label">Tast inn i systemet</span>
+    <span class="code-value">PRUNARIU-61</span>
+    <div class="code-note">Del ikke med det andre laget.</div>
+  </div>
+
+  <div class="divider"><span>Kjemiske rasjoner</span></div>
+
+  <div class="shots-box">
+    <div class="shots-icon">🥃</div>
+    <div class="shots-text">
+      <strong>Forhåndsbetalt kritisk stabiliseringsvæske — 1 stk. per kosmonaut</strong>
+      Rasjonene er allerede utlevert sammen med dette dokumentet. Mission Control bekrefter mottak.
+    </div>
+  </div>
+
+  <div class="body-text" style="font-size:7.5pt; color:#555;">
+    <span class="red">⚠ ADVARSEL:</span> Avsløring av romprogrammets eksistens vil føre til umiddelbar deportasjon. Flight Director overvåker operasjonen i sanntid. Lykke til — månen venter.
+  </div>
+
+  <div class="footer">
+    <span>Dok-ID: ORBIT-KONV-02</span>
+    <span>Mission Control // Überwacht</span>
+    <span>Clearance: LVL 5</span>
+  </div>
+
+</div>
+
+</body>
+</html>

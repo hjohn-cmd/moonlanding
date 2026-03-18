@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLASSIFIED // OP-MOON-LANDING // BRAVO</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap');
+  :root {
+    --red: #cc0000;
+    --red-dim: #7a0000;
+    --green: #00ff41;
+    --green-dim: #00aa2a;
+    --bg: #050505;
+    --text: #e0e0cc;
+    --text-dim: #999;
+    --team-color: #ff9900; /* Bravo Team Color (Orange) */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    cursor: default;
+    padding-bottom: 60px;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none; z-index: 999;
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none; z-index: 998;
+  }
+  /* BOOT */
+  #boot {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 900; gap: 8px;
+  }
+  #boot.hidden { display: none; }
+  .boot-line { font-size: 15px; color: var(--green-dim); letter-spacing: 1px; opacity: 0; animation: fadeIn 0.1s forwards; white-space: nowrap; }
+  .boot-line.red { color: var(--red); }
+  .boot-line.bright { color: var(--green); font-size: 17px; }
+  @keyframes fadeIn { to { opacity: 1; } }
+  /* MAIN */
+  #main { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 820px; padding: 40px 24px 0; gap: 0; }
+  #main.visible { display: flex; }
+  .top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: 12px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; opacity: 0; animation: slideDown 0.6s 0.2s forwards; }
+  .top-bar .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 6px; box-shadow: 0 0 8px var(--green); animation: blink 1.4s infinite; }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+  @keyframes slideDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes slideUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  .header { width: 100%; text-align: center; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 22px 0 18px; margin-bottom: 30px; position: relative; opacity: 0; animation: slideDown 0.7s 0.4s forwards; }
+  .header::before { content: ''; position: absolute; left: 0; right: 0; height: 1px; top: 3px; background: linear-gradient(90deg, transparent, var(--red-dim), transparent); }
+  .header::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; bottom: 3px; background: linear-gradient(90deg, transparent, var(--red-dim), transparent); }
+  .classified-label { font-size: 13px; letter-spacing: 8px; color: var(--red); text-transform: uppercase; margin-bottom: 10px; display: block; }
+  .header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 9vw, 68px); letter-spacing: 6px; color: #e8e8d4; line-height: 1; text-shadow: 0 0 30px rgba(200,0,0,0.25), 0 0 60px rgba(200,0,0,0.1); animation: glitch 6s infinite; }
+  .header h1 span { color: var(--red); }
+  .header .sub { font-size: 13px; letter-spacing: 4px; color: var(--text-dim); margin-top: 10px; display: block; }
+  .bracket { position: absolute; width: 18px; height: 18px; }
+  .bracket.tl { top: 8px; left: 8px; border-top: 1px solid var(--red); border-left: 1px solid var(--red); }
+  .bracket.tr { top: 8px; right: 8px; border-top: 1px solid var(--red); border-right: 1px solid var(--red); }
+  .bracket.bl { bottom: 8px; left: 8px; border-bottom: 1px solid var(--red); border-left: 1px solid var(--red); }
+  .bracket.br { bottom: 8px; right: 8px; border-bottom: 1px solid var(--red); border-right: 1px solid var(--red); }
+  .decrypt-box { width: 100%; background: #0a0a0a; border: 1px solid #1c1c1c; padding: 20px 24px; margin-bottom: 30px; opacity: 0; animation: slideUp 0.6s 0.7s forwards; position: relative; }
+  .decrypt-box::before { content: 'DEKRYPTERER LOKALISERINGS-DATA...'; position: absolute; top: -10px; left: 16px; background: var(--bg); padding: 0 8px; font-size: 11px; letter-spacing: 2px; color: var(--red); }
+  .decrypt-text { font-size: 14px; line-height: 1.8; color: var(--text-dim); letter-spacing: 0.5px; }
+  .decrypt-text .reveal { color: var(--text); }
+  .decrypt-text .highlight { color: var(--team-color); }
+  .decrypt-text .codename { color: var(--red); font-size: 15px; }
+  .video-section { width: 100%; opacity: 0; animation: slideUp 0.6s 1s forwards; margin-bottom: 30px; }
+  .video-label { font-size: 11px; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .video-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, #2a0000, transparent); }
+  .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border: 1px solid #1c1c1c; overflow: hidden; }
+  .video-wrapper::before { content: ''; position: absolute; inset: 0; border: 1px solid #1a0000; z-index: 2; pointer-events: none; }
+  .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+  /* TIMELINE */
+  .timeline { width: 100%; opacity: 0; animation: slideUp 0.6s 1.2s forwards; margin-bottom: 10px; border-left: 2px solid #1c1c1c; padding-left: 24px; position: relative; }
+  .phase { position: relative; margin-bottom: 35px; background: #0a0a0a; border: 1px solid #1c1c1c; padding: 18px 22px; }
+  .phase::before { content: ''; position: absolute; left: -31px; top: 18px; width: 12px; height: 12px; background: var(--bg); border: 2px solid var(--red); border-radius: 50%; z-index: 2; }
+  .phase.completed::before { border-color: var(--green); background: var(--green); box-shadow: 0 0 10px var(--green); }
+  .phase .phase-label { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--text); margin-bottom: 10px; display: flex; justify-content: space-between; }
+  .phase .phase-label span { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--red); letter-spacing: 1px; margin-top: 6px; }
+  .phase .coord-tag { font-size: 10px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
+  .phase .coord-value { font-size: 16px; color: var(--green); letter-spacing: 1px; margin-bottom: 8px; }
+  .phase .coord-dest { font-size: 15px; color: var(--team-color); letter-spacing: 0.5px; margin-bottom: 10px; font-weight: bold; }
+  .phase .coord-note { font-size: 13px; color: var(--text-dim); line-height: 1.6; border-top: 1px dashed #1c1c1c; padding-top: 10px; }
+  .phase .highlight-text { color: var(--text); font-weight: bold; }
+  /* AUTH MODULE */
+  .auth-module { margin-top: 15px; border-top: 1px solid #1c1c1c; padding-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+  .auth-input-group { display: flex; gap: 10px; }
+  .auth-module input { flex: 1; background: #000; border: 1px solid var(--red); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 16px; padding: 10px; text-transform: uppercase; letter-spacing: 2px; outline: none; transition: border 0.3s; }
+  .auth-module input:focus { border-color: var(--green); box-shadow: inset 0 0 5px rgba(0,255,65,0.2); }
+  .auth-module button { background: var(--red); color: #000; border: none; font-family: 'Share Tech Mono', monospace; font-size: 14px; font-weight: bold; padding: 0 20px; cursor: pointer; transition: 0.2s; }
+  .auth-module button:hover { background: #ff3333; }
+  .auth-status { font-size: 12px; height: 15px; color: var(--red); letter-spacing: 1px; }
+  .flash-error { animation: flashRed 0.4s 2; }
+  /* PHASE 3 TASKS WRAPPER */
+  #classified-tasks { display: none; flex-direction: column; gap: 0; margin-top: 20px; }
+  .tasks-header { font-size: 11px; color: var(--green); margin-bottom: 14px; border-bottom: 1px solid #1c1c1c; padding-bottom: 8px; line-height: 1.8; }
+  /* MISSION TASK CARD */
+  .mission-task { background: #050505; border: 1px solid #1c1c1c; border-left: 3px solid var(--green); padding: 16px 18px; margin-bottom: 16px; transition: border-color 0.3s; }
+  .mission-task.task-done { border-left-color: var(--green-dim); opacity: 0.75; }
+  .mission-task h3 { font-size: 14px; color: var(--green); letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+  .mission-task p { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-bottom: 8px; }
+  .mission-task .req { font-size: 11px; color: var(--text); font-weight: bold; line-height: 1.5; }
+  /* CHECKBOX */
+  .task-check-row { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #1c1c1c; cursor: pointer; }
+  .task-checkbox { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; min-width: 20px; border: 1px solid var(--green-dim); background: #000; cursor: pointer; position: relative; transition: all 0.2s; }
+  .task-checkbox:checked { background: var(--green); border-color: var(--green); box-shadow: 0 0 10px rgba(0,255,65,0.4); }
+  .task-checkbox:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 13px; font-weight: bold; }
+  .task-check-label { font-size: 11px; letter-spacing: 3px; color: var(--green-dim); text-transform: uppercase; cursor: pointer; transition: color 0.2s; user-select: none; }
+  .task-checkbox:checked + .task-check-label { color: var(--green); text-decoration: line-through; text-decoration-color: var(--green-dim); }
+  /* HISTORICAL INFOBOKS */
+  .intel-box { display: none; margin-top: 14px; background: #020202; border: 1px solid #1c1c1c; border-left: 3px solid var(--team-color); padding: 14px 16px; position: relative; overflow: hidden; }
+  .intel-box::before { content: '▶ HISTORISK TELEMETRI // DEKRYPTERT'; display: block; font-size: 9px; letter-spacing: 3px; color: var(--team-color); margin-bottom: 10px; opacity: 0.8; }
+  .intel-box::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--team-color), transparent); opacity: 0.4; }
+  .intel-box p { font-size: 12px; color: var(--text-dim); line-height: 1.8; letter-spacing: 0.3px; }
+  .intel-box.visible { display: block; animation: intelReveal 0.5s ease forwards; }
+  @keyframes intelReveal { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  /* ── EXTRACTION UNLOCK BOX ── */
+  #extraction-trigger { display: none; width: 100%; margin-top: 8px; margin-bottom: 24px; border: 1px solid var(--red); background: #0d0000; padding: 22px 24px; position: relative; animation: pulseRed 2.5s ease-in-out infinite; }
+  @keyframes pulseRed { 0%,100% { box-shadow: 0 0 0 rgba(204,0,0,0); border-color: var(--red); } 50% { box-shadow: 0 0 20px rgba(204,0,0,0.25); border-color: #ff2222; } }
+  .extraction-corner { position: absolute; width: 14px; height: 14px; }
+  .extraction-corner.tl { top: 6px; left: 6px; border-top: 1px solid var(--red); border-left: 1px solid var(--red); }
+  .extraction-corner.tr { top: 6px; right: 6px; border-top: 1px solid var(--red); border-right: 1px solid var(--red); }
+  .extraction-corner.bl { bottom: 6px; left: 6px; border-bottom: 1px solid var(--red); border-left: 1px solid var(--red); }
+  .extraction-corner.br { bottom: 6px; right: 6px; border-bottom: 1px solid var(--red); border-right: 1px solid var(--red); }
+  .extraction-header { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; color: var(--red); text-align: center; margin-bottom: 12px; }
+  .extraction-body { font-size: 12px; line-height: 1.9; color: var(--text-dim); text-align: center; margin-bottom: 18px; letter-spacing: 0.3px; }
+  .extraction-body .sms-link { color: var(--text); font-weight: bold; letter-spacing: 2px; font-size: 14px; display: block; margin: 10px 0 4px; }
+  .extraction-input-row { display: flex; gap: 10px; }
+  .extraction-input-row input { flex: 1; background: #000; border: 1px solid var(--red-dim); color: var(--green); font-family: 'Share Tech Mono', monospace; font-size: 16px; padding: 11px 14px; text-transform: uppercase; letter-spacing: 4px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; caret-color: var(--green); }
+  .extraction-input-row input:focus { border-color: var(--red); box-shadow: 0 0 12px rgba(204,0,0,0.2); }
+  .extraction-input-row button { background: var(--red); color: #000; border: none; font-family: 'Share Tech Mono', monospace; font-size: 13px; font-weight: bold; padding: 0 18px; letter-spacing: 2px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+  .extraction-input-row button:hover { background: #ff2222; }
+  #extraction-status { font-size: 11px; color: var(--red); letter-spacing: 2px; margin-top: 10px; text-align: center; height: 16px; }
+  /* ── MÅL 7 ── */
+  #mission-task-7 { display: none; background: #050505; border: 1px solid #1c1c1c; border-left: 3px solid var(--red); padding: 16px 18px; margin-bottom: 16px; position: relative; overflow: hidden; }
+  #mission-task-7::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--red), transparent); }
+  #mission-task-7 h3 { font-size: 14px; color: var(--red); letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+  #mission-task-7 p { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-bottom: 8px; }
+  #mission-task-7 .req { font-size: 11px; color: var(--text); font-weight: bold; line-height: 1.5; }
+  .task7-intel { display: none; margin-top: 14px; background: #020202; border: 1px solid #2a0000; border-left: 3px solid var(--red); padding: 14px 16px; position: relative; }
+  .task7-intel::before { content: '▶ MISSION ACCOMPLISHED // RAPPORTERER TIL BASE'; display: block; font-size: 9px; letter-spacing: 3px; color: var(--red); margin-bottom: 10px; }
+  .task7-intel p { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
+  .task7-intel.visible { display: block; animation: intelReveal 0.5s ease forwards; }
+  /* ANIMATIONS */
+  @keyframes glitch { 0%, 95%, 100% { text-shadow: 0 0 30px rgba(200,0,0,0.25); transform: none; } 96% { transform: translateX(-2px); text-shadow: 2px 0 var(--red), -2px 0 #0ff; } 97% { transform: translateX(2px); text-shadow: -2px 0 var(--red), 2px 0 #0ff; } 98% { transform: translateX(0); } }
+  @keyframes flashRed { 0%, 100% { color: var(--red); } 50% { color: #fff; } }
+  @keyframes task7Appear { 0% { opacity: 0; transform: translateY(20px) scale(0.97); filter: brightness(2); } 60% { opacity: 1; filter: brightness(1.3); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); } }
+  .footer { width: 100%; max-width: 820px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; letter-spacing: 1.5px; color: var(--text-dim); text-transform: uppercase; border-top: 1px solid #111; padding: 16px 24px; opacity: 0; animation: slideUp 0.6s 1.4s forwards; flex-wrap: wrap; gap: 12px; }
+  .footer .destruct { color: var(--red-dim); font-size: 9px; width: 100%; text-align: center; margin-bottom: 6px; }
+  @media (max-width: 600px) {
+    .footer { flex-direction: column; text-align: center; }
+    .auth-input-group { flex-direction: column; }
+    .auth-module button { padding: 12px; }
+    .extraction-input-row { flex-direction: column; }
+    .extraction-input-row button { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+<div id="boot"></div>
+<div id="main">
+  <div class="top-bar">
+    <span><span class="status-dot"></span>MISSION CONTROL TILKOBLET</span>
+    <span>PROTOKOLL: PRUNARIU-81</span>
+    <span>01.05 // 12:00:00</span>
+  </div>
+  <div class="header">
+    <div class="bracket tl"></div><div class="bracket tr"></div><div class="bracket bl"></div><div class="bracket br"></div>
+    <span class="classified-label">⬛ DIRECTORATE OF EXTRATERRESTRIAL AMBITIONS ⬛</span>
+    <h1>OPERATION <span>MOON LANDING</span></h1>
+    <span class="sub">Programul Spațial Român // Kosmonaut-Trening</span>
+  </div>
+  <div class="decrypt-box">
+    <div class="decrypt-text">
+      KANDIDAT-GRUPPE: <span class="highlight">LAG BRAVO</span> &nbsp;|&nbsp;
+      STATUS: <span class="codename">AKTIVERT</span> &nbsp;|&nbsp;
+      LEDET AV: <span class="reveal">FLIGHT DIRECTOR</span>
+      <br><br>
+      Kandidater. Hvis dere leser dette, er den kjemiske toleransetesten bestått. Rakettdrivstoffet er fortært. Kroppene deres er klare. <span class="reveal">Velkommen til det hemmelige rumenske romprogrammet.</span>
+      <br><br>
+      Deres oppdrag er å reaktivere utstyret, samle inn navigasjonsdata, og forberede dere på oppskytning. Se briefingen fra Mission Control nedenfor. <span class="reveal">Én gang.</span> Følg deretter fasene i streng rekkefølge.
+    </div>
+  </div>
+  <div class="video-section">
+    <div class="video-label">▶ INNKOMMENDE SATELLITTSENDING // FLIGHT DIRECTOR</div>
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/2M79XSEC1wI?rel=0&color=white&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="phase">
+      <div class="phase-label">FASE 1: TELEMETRI-KALIBRERING <span>[AKTIV]</span></div>
+      <div class="coord-tag">Startkoordinater Alpha/Bravo Bunker</div>
+      <div class="coord-value">Bloc 9, Strada Ion Câmpineanu 25</div>
+      <div class="coord-dest">📍 Bunkeren -> Piața Universității</div>
+      <div class="coord-note">
+        Før operasjonen kan starte, krever romprogrammet at laget beviser at de tåler massivt trykk. Dere har fått utlevert én 2,5-liters 'Bomba' med lokalt rakettdrivstoff (Fuel Grade B-1).<br><br>
+        <span class="highlight-text">⚠ KRAV: Flasken skal tømmes i fellesskap før dere får forlate bunkeren. Dokumenter tom plastrakett med lagbilde. Deretter forflytter dere dere til Universitetsplassen. Ta et lagbilde foran de tre store statuene hvor dere imiterer deres positurer for å kalibrere GPS-en. Last opp bevis i Telegram før dere har tillatelse til å iverksette Fase 2.</span>
+      </div>
+    </div>
+    <div class="phase" id="phase-2-box">
+      <div class="phase-label">FASE 2: PRUNARIU-PROTOKOLLEN <span>[LÅST]</span></div>
+      <div class="coord-tag">Lokasjon for gjenlevende bakkemannskap</div>
+      <div class="coord-dest" style="color: var(--team-color);">📍 The Urbanist (Strada Căldărari 3)</div>
+      <div class="coord-note">
+        I verdensrommet betyr egoet ditt ingenting. Lokaliser vår siste gjenlevende bakkemannskap-ingeniør ved baren. For å motta overstyringskoden til systemet og kjemiske rasjoner, MÅ hele laget bevise at dere er blottet for stolthet. Dere må se ingeniøren i øynene og avgi følgende:<br><br>
+        1. Dere sier: <span class="highlight-text">"Sunt o prințesă dulce"</span><br>
+        <span style="font-size:11px; color:var(--text-dim); padding-left:16px;">↳ uttales: <em>sunt o prin-tse-suh dul-che</em></span><br><br>
+        2. Ingeniøren spør: "Ce cauți?" <span style="font-size:11px; color:var(--text-dim);"><em>(che kow-tsee?)</em></span><br><br>
+        3. Dere svarer i kor: <span class="highlight-text">"Căutăm demnitate"</span><br>
+        <span style="font-size:11px; color:var(--text-dim); padding-left:16px;">↳ uttales: <em>kuh-oo-tuhm dem-ni-tah-te</em></span><br><br>
+        Ved vellykket nedbrytning av egoet, vil ingeniøren oppgi en kryptert kode. Skriv den inn under for å laste ned resten av Flight Manualen.
+      </div>
+      <div class="auth-module">
+        <div class="auth-status" id="auth-status">VENTER PÅ INNDATA...</div>
+        <div class="auth-input-group">
+          <input type="text" id="override-code" placeholder="SKRIV INN KODE" autocomplete="off" spellcheck="false">
+          <button id="auth-btn" onclick="verifyPhase2Code()">DEKRYPTER</button>
+        </div>
+      </div>
+      <div id="classified-tasks">
+        <div class="tasks-header">
+          > NEDLASTING FULLFØRT: FLIGHT MANUAL // NAVIGASJONSKALIBRERING<br>
+          > UTFØR MINST 4 AV DE 6 MÅLENE NEDENFOR.<br>
+          > MÅL 7 LÅSES OPP VED 4 FULLFØRTE MÅL + GODKJENNING FRA MISSION CONTROL.
+        </div>
+        <div class="mission-task" id="task-1">
+          <h3>MÅL 1: VERIFISERING AV GULLRESERVER (CEC-Palasset)</h3>
+          <p>Lokaliser de massive jernportene under glasskuppelen på Calea Victoriei 13.</p>
+          <div class="req">> KRAV: Én person er vakt, resten prøver å bestikke seg inn. Bildebevis sendes Base.</div>
+          <label class="task-check-row">
+            <input type="checkbox" class="task-checkbox mission-checkbox" data-task="1" onchange="onTaskCheck(this)">
+            <span class="task-check-label">MÅL FULLFØRT</span>
+          </label>
+          <div class="intel-box" id="intel-1">
+            <p>Bygget i 1900 på tomten til et gammelt kloster, og er et kroneksempel på hvorfor București en gang ble kalt 'Lille Paris'. Arkitekten var fransk, og den massive kuppelen er konstruert av glass og stål fra nøyaktig samme periode og stil som Eiffeltårnet. Under kommunisttiden var dette en av svært få banker som fikk fortsette driften uavbrutt, da diktaturet trengte en 'folkets sparebank' for å samle inn innbyggernes penger. At bygget har overlevd både de massive jordskjelvene i 1940 og 1977, samt Ceaușescus bulldosere, er et lite mirakel.</p>
+          </div>
+        </div>
+        <div class="mission-task" id="task-2">
+          <h3>MÅL 2: DATAKRYPTERING (Cărturești Carusel)</h3>
+          <p>Infiltrer byens vakreste bokhandel. Finn den boken med den mest uuttallelige tittelen på rumensk.</p>
+          <div class="req">> KRAV: Video av én kosmonaut fra laget som forsøker å lese tittelen høyt og tydelig for datamaskinen.</div>
+          <label class="task-check-row">
+            <input type="checkbox" class="task-checkbox mission-checkbox" data-task="2" onchange="onTaskCheck(this)">
+            <span class="task-check-label">MÅL FULLFØRT</span>
+          </label>
+          <div class="intel-box" id="intel-2">
+            <p>Kjent som 'Lysets karusell' (Caruselul Luminii). Denne fantastiske bygningen ble reist i 1903 av den styrtrike greske bankier-familien Chrissoveloni. I 1948 slo kommunistregimet til, konfiskerte bygget, og forvandlet det til et trist og grått statlig varehus. Etter kommunismens fall forfalt bygget til en farlig ruin. Oldebarnet til den opprinnelige eieren brukte 24 år i byråkratiet for å vinne bygget tilbake. I 2015 gjenoppsto det fra ruinene som en av verdens vakreste bokhandlere, med seks etasjer og sveipende hvite trapper. Et visuelt mesterverk – og det perfekte stedet å gjemme hemmelige koder.</p>
+          </div>
+        </div>
+        <div class="mission-task" id="task-3">
+          <h3>MÅL 3: ATMOSFÆRISK VELSIGNELSE (Stavropoleos)</h3>
+          <p>Finn den gjemte, ortodokse kirken fra 1724 i kaoset. Be om trygg ferdsel gjennom atmosfæren.</p>
+          <div class="req">> KRAV: Lagfoto ved inngangen — alle med hendene foldet og blikket ærbødig rettet mot stjernene.</div>
+          <label class="task-check-row">
+            <input type="checkbox" class="task-checkbox mission-checkbox" data-task="3" onchange="onTaskCheck(this)">
+            <span class="task-check-label">MÅL FULLFØRT</span>
+          </label>
+          <div class="intel-box" id="intel-3">
+            <p>Oppført i 1724 av en gresk munk. Kirken er kanskje det mest perfekte eksempelet på 'Brâncovenesc-stil' – en helt unik rumensk arkitektur som blander bysantinske, osmanske, renessanse- og barokkelementer. Navnet kommer fra gresk ('Stauropolis' – Korsets by). Under kommunismen, da utallige kirker ble jevnet med jorden, ble denne reddet fordi den rett og slett ble ansett som et uerstattelig kunstverk. Gårdsplassen bak er fylt med gravsteiner og fragmenter fra andre kirker i byen som ikke var like heldige og ble ødelagt av regimet.</p>
+          </div>
+        </div>
+        <div class="mission-task" id="task-4">
+          <h3>MÅL 4: NÆRINGSOPPTAK (Feltstasjon Ukjent)</h3>
+          <p>Lokaliser nærmeste gateutsalg eller bakeri. Infiltrer. Spør betjeningen om anbefaling på dagens beste proviant.</p>
+          <div class="req">> KRAV: Kjøp én enhet av det de anbefaler. Del rasjonen med laget. Bildebevis av inntak sendes Base — tommel opp eller ned obligatorisk.</div>
+          <label class="task-check-row">
+            <input type="checkbox" class="task-checkbox mission-checkbox" data-task="4" onchange="onTaskCheck(this)">
+            <span class="task-check-label">MÅL FULLFØRT</span>
+          </label>
+          <div class="intel-box" id="intel-4">
+            <p>Velkommen til den rumenske folkesjelen. 'Covrigi' (rumenske kringler) sies å ha blitt introdusert av utspekulerte greske kjøpmenn på 1800-tallet. De delte dem ut gratis på vertshusene for å gjøre gjestene tørste, noe som fikk vinsalget til å skyte i været. I dag er dette Romanias ubestridte nasjonalsnacks og den ultimate 'on-the-go' maten for folk på farten. Det selges millioner av disse hver eneste dag. Den mest klassiske varianten er drysset med store saltkorn eller valmuefrø.</p>
+          </div>
+        </div>
+        <div class="mission-task" id="task-5">
+          <h3>MÅL 5: HISTORISK TELEMETRI (Lipscani)</h3>
+          <p>Finn et tydelig spor fra The Red Decade (kommunisttiden) — arkitektur, et skilt, et symbol.</p>
+          <div class="req">> KRAV: Foto av objektet med en kort, overbevisende forklaring i Telegram på hvorfor dere valgte det.</div>
+          <label class="task-check-row">
+            <input type="checkbox" class="task-checkbox mission-checkbox" data-task="5" onchange="onTaskCheck(this)">
+            <span class="task-check-label">MÅL FULLFØRT</span>
+          </label>
+          <div class="intel-box" id="intel-5">
+            <p>Det historiske sentrumet du står i nå overlevde bare med et nødskrik. På 1980-tallet ble diktatoren Nicolae Ceaușescu besatt av å bygge sitt absurde Parlamentspalass. For å få plass, jevnet han en femtedel av det historiske București med jorden – inkludert titusenvis av hjem og historiske monumenter. Gamlebyen ble kun spart fordi regimet innså at det ville bli for dyrt og komplisert å flytte det massive nettverket av industri og underjordiske rør som lå her. I stedet valgte de å bygge gigantiske, grå betongblokker rundt hele bydelen for å 'gjemme bort' den borgerlige arkitekturen.</p>
+          </div>
+        </div>
+        <div class="mission-task" id="task-6">
+          <h3>MÅL 6: TIDSKAPSELEN (Hanul lui Manuc)</h3>
+          <p>Infiltrer bakgården til Europas eldste fungerende hotell (Strada Franceză 62).</p>
+          <div class="req">> KRAV: Lagbilde ved vinfatene eller tretrappene. Se ut som dere flykter fra 1808. Ingen smil!</div>
+          <label class="task-check-row">
+            <input type="checkbox" class="task-checkbox mission-checkbox" data-task="6" onchange="onTaskCheck(this)">
+            <span class="task-check-label">MÅL FULLFØRT</span>
+          </label>
+          <div class="intel-box" id="intel-6">
+            <p>Dette er faktisk Europas eldste fungerende hotell, bygget i 1808 av den styrtrike armenske kjøpmannen (og diplomaten/spionen) Emanuel Mârzaian, bedre kjent som Manuc Bei. Vertshuset fungerte som det absolutte sentrum for handel og politikk på Balkan. Arkitekturen med de massive trebalkongene rundt en lukket bakgård var designet for å beskytte varer og gjester mot røvere. Det var nettopp her inne, i dypeste hemmelighet, at fredsavtalen som avsluttet den russisk-tyrkiske krigen ble forhandlet frem og signert i 1812.</p>
+          </div>
+        </div>
+        <div id="extraction-trigger">
+          <div class="extraction-corner tl"></div>
+          <div class="extraction-corner tr"></div>
+          <div class="extraction-corner bl"></div>
+          <div class="extraction-corner br"></div>
+          <div class="extraction-header">⚠ KRYPTERT MELDING FRA MISSION CONTROL ⚠</div>
+          <div class="extraction-body">
+            For å motta koordinater for Final Extraction, kontakt Mission Control via skuddsikkert meldingssystem (SMS).
+            Dekrypteringsnøkkel utleveres KUN når minimum 4 oppgaver er gjennomført, dokumentert med bilde/video,
+            og offisielt godkjent av Flight Director.
+            <span class="sms-link">📡 +47 980 21 035</span>
+            Skriv inn dekrypteringsnøkkelen under når du mottar den:
+          </div>
+          <div class="extraction-input-row">
+            <input type="text" id="extraction-code" placeholder="DEKRYPTERINGSNØKKEL" autocomplete="off" spellcheck="false">
+            <button onclick="verifyExtractionCode()">DEKRYPTER</button>
+          </div>
+          <div id="extraction-status"></div>
+        </div>
+        <div class="mission-task" id="mission-task-7">
+          <h3>MÅL 7: OPPSKYTNINGSRAMPEN (FINAL EXTRACTION)</h3>
+          <p>Finn utestedet "Linea / Closer to the Moon". Infiltrer gantry-kranen (heisen).</p>
+          <div class="req">> KRAV: Første lag som sender bilde av heisdøren fra innsiden vinner runden — Flight Director venter på toppen.</div>
+          <label class="task-check-row">
+            <input type="checkbox" class="task-checkbox" onchange="onTask7Check(this)">
+            <span class="task-check-label">MÅL FULLFØRT</span>
+          </label>
+          <div class="task7-intel" id="intel-7">
+            <p>MISSION ACCOMPLISHED. Dere har overlevd g-kreftene, navigert gjennom fiendtlig territorium, og unngått kontraspionasjen. 'Closer to the Moon' er ikke bare et navn, det er det offisielle endepunktet for den rumenske romfartsopplæringen. Finn Flight Director på taket. Rapporter for umiddelbar de-briefing, rehydrering med sterke væsker, og den offisielle utdelingen av vitnemål. Første runde betales av taperlaget.</p>
+          </div>
+        </div>
+      </div></div></div></div><div class="footer" id="main-footer" style="display:none;">
+  <span class="destruct">⚠ AVSLØRING AV ROMPROGRAMMET VIL FØRE TIL UMIDDELBAR DEPORTASJON.</span>
+  <span>DOKUMENT-ID: ORBIT-BRAVO</span>
+  <span>MISSION CONTROL // OVERVÅKER SYSTEMENE</span>
+</div>
+<script>
+  /* ── BOOT ── */
+  async function runBootSequence() {
+    const boot = document.getElementById('boot');
+    const main = document.getElementById('main');
+    const footer = document.getElementById('main-footer');
+    const addLine = (text, delay, cls) => new Promise(resolve => {
+      setTimeout(() => {
+        if (text !== null) {
+          const line = document.createElement('div');
+          line.className = `boot-line ${cls}`;
+          line.style.animationDelay = '0s';
+          line.textContent = '> ' + text;
+          boot.appendChild(line);
+        }
+        resolve();
+      }, delay);
+    });
+    await addLine('OPPRETTER SIKKER SATELLITT-LINK...', 0, '');
+    await addLine('VERIFISERER BIOMETRISKE DATA...', 400, '');
+    const ua = navigator.userAgent;
+    let device = 'UKJENT KOSMONAUT-TERMINAL';
+    if (ua.includes('iPhone')) device = 'Apple iPhone (Modifisert)';
+    else if (ua.includes('iPad')) device = 'Apple iPad (Modifisert)';
+    else if (ua.includes('Android')) device = 'Android-enhet (Kryptert)';
+    else if (ua.includes('Mac OS')) device = 'MacBook / Mac (Kryptert)';
+    else if (ua.includes('Windows')) device = 'Windows PC (Kryptert)';
+    let ipData = { ip: 'SKJULT SPOR', city: 'UKJENT SONE', org: 'ROAMING' };
+    try {
+      const r = await fetch('https://ipapi.co/json/');
+      if (r.ok) ipData = await r.json();
+    } catch(e) {}
+    await addLine(`ANALYSERER MASKINVARE... [${device}]`, 900, '');
+    await addLine(`SPORER IP-TILKOBLING... [${ipData.ip}]`, 800, '');
+    await addLine(`LOKASJON BEKREFTET: ${ipData.city}`, 800, 'bright');
+    await addLine(`LEVERANDØR: ${ipData.org}`, 600, 'bright');
+    await addLine('AUTENTISERER KANDIDATER... [GODKJENT]', 800, 'bright');
+    await addLine('LASTER INN MISJONSPROTOKOLL...', 600, '');
+
+    setTimeout(() => {
+      boot.classList.add('hidden');
+      main.classList.add('visible');
+      footer.style.display = 'flex';
+    }, 1200);
+  }
+
+  runBootSequence();
+
+  /* ── FASE 2: LÅS OPP OPPGAVER ── */
+  function verifyPhase2Code() {
+    const code = document.getElementById('override-code').value.toUpperCase().trim();
+    const status = document.getElementById('auth-status');
+    const tasks = document.getElementById('classified-tasks');
+    const phase2Box = document.getElementById('phase-2-box');
+
+    if (code === 'PRUNARIU-61') {
+      status.style.color = 'var(--green)';
+      status.textContent = 'TILGANG INNVILGET. LASTER NED MANUAL...';
+      
+      setTimeout(() => {
+        document.querySelector('.auth-module').style.display = 'none';
+        tasks.style.display = 'flex';
+        phase2Box.classList.add('completed');
+        phase2Box.querySelector('.phase-label').innerHTML = 'FASE 2: PRUNARIU-PROTOKOLLEN <span>[FULLFØRT]</span>';
+        tasks.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 1000);
+    } else {
+      status.style.color = 'var(--red)';
+      status.textContent = 'FEIL KODE. TILGANG NEKTET.';
+      status.classList.remove('flash-error');
+      void status.offsetWidth;
+      status.classList.add('flash-error');
+    }
+  }
+
+  /* ── FASE 3: OPPGAVE-LOGIKK OG TELLING ── */
+  let completedTasksCount = 0;
+
+  function onTaskCheck(checkbox) {
+    const taskId = checkbox.getAttribute('data-task');
+    const intelBox = document.getElementById('intel-' + taskId);
+    const taskCard = document.getElementById('task-' + taskId);
+
+    if (checkbox.checked) {
+      intelBox.classList.add('visible');
+      taskCard.classList.add('task-done');
+      completedTasksCount++;
+      
+      setTimeout(() => {
+        intelBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 150);
+    } else {
+      intelBox.classList.remove('visible');
+      taskCard.classList.remove('task-done');
+      completedTasksCount--;
+    }
+
+    checkExtractionUnlock();
+  }
+
+  /* ── SJEKK FOR Å VISE ADVARSELSBOKSEN FOR MÅL 7 ── */
+  function checkExtractionUnlock() {
+    const triggerBox = document.getElementById('extraction-trigger');
+    if (completedTasksCount >= 4) {
+      triggerBox.style.display = 'block';
+    } else {
+      triggerBox.style.display = 'none';
+    }
+  }
+
+  /* ── DEKRYPTER FINAL EXTRACTION (MÅL 7) ── */
+  function verifyExtractionCode() {
+    const code = document.getElementById('extraction-code').value.toUpperCase().trim();
+    const status = document.getElementById('extraction-status');
+    const triggerBox = document.getElementById('extraction-trigger');
+    const task7 = document.getElementById('mission-task-7');
+
+    if (code === 'LAIKA' || code === 'APOLLO') { 
+      status.style.color = 'var(--green)';
+      status.textContent = 'DEKRYPTERING FULLFØRT. KOORDINATER MOTTATT.';
+      
+      setTimeout(() => {
+        triggerBox.style.display = 'none';
+        task7.style.display = 'block';
+        task7.style.animation = 'task7Appear 1.2s ease forwards';
+        setTimeout(() => {
+          task7.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }, 1200);
+    } else {
+      status.style.color = 'var(--red)';
+      status.textContent = 'FEIL NØKKEL. KONTAKT MISSION CONTROL.';
+      status.classList.remove('flash-error');
+      void status.offsetWidth;
+      status.classList.add('flash-error');
+    }
+  }
+
+  /* ── MÅL 7: SJEKKBOKS LOGIKK ── */
+  function onTask7Check(checkbox) {
+    const intelBox = document.getElementById('intel-7');
+    if (checkbox.checked) {
+      intelBox.classList.add('visible');
+      setTimeout(() => {
+        intelBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 150);
+    } else {
+      intelBox.classList.remove('visible');
+    }
+  }
+</script>
+</body>
+</html>

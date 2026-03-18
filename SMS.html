@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Full Comms Dashboard</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --green: #00ff41;
+            --dim: #008f11;
+            --red: #ff003c;
+            --panel: #111;
+            --border: #333;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--green);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 15px;
+            line-height: 1.4;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px dashed var(--dim);
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--dim);
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            position: relative;
+        }
+        .card.red-alert {
+            border-left-color: var(--red);
+        }
+        .card-title {
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        .msg-text {
+            color: #ccc;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+            background: #000;
+            padding: 10px;
+            border: 1px dotted var(--border);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            background: var(--dim);
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            border-radius: 2px;
+            flex: 1;
+        }
+        button.delete-btn {
+            background: #440000;
+            color: #ff003c;
+            flex: 0.3;
+            font-size: 0.7rem;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        button.copied {
+            background: #fff;
+            color: #000;
+        }
+        button.red-btn {
+            background: var(--red);
+            color: #fff;
+        }
+        /* Styling for input-felt */
+        textarea, input {
+            width: 100%;
+            background: #000;
+            color: var(--green);
+            border: 1px solid var(--dim);
+            padding: 12px;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        #status {
+            font-size: 0.7rem;
+            color: #ffcc00;
+            text-align: center;
+            margin-top: 15px;
+            font-style: italic;
+            background: #1a1a1a;
+            padding: 8px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📡 Mission Control Dashboard</h1>
+
+    <div class="card">
+        <div class="card-title">1. DIREKTE GO (Ingen forsinkelse)</div>
+        <div class="msg-text" id="msg1">[INNKOMMENDE TRANSMISJON // SOKK-STATUS: LOKALISERT]
+
+Operative, meldingen er mottatt og dekryptert. Ørnen er forsynt, og sokken er trygt plassert i bane rundt jorden. Direktoratet har vurdert deres innsats og funnet den tilfredsstillende for oppskytning.
+
+Deres autorisasjonsnøkkel: LAIKA
+
+Tast inn koden i portalen for å låse opp de siste koordinatene. Beveg dere umiddelbart til oppskytingsrampen. Flight Director venter. Velkommen opp i stratosfæren. Over og ut. 🛰️🥃🧦</div>
+        <button onclick="copyText('msg1', this)">Kopier til utklippstavle</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title">2. STALLING (Teknisk / Romfart)</div>
+        <div class="msg-text" id="msg2">[MELDING FRA MISSION CONTROL // SIGNAL INTERFERENS]
+
+Kandidater. Melding mottatt, men vi opplever kraftige atmosfæriske forstyrrelser over Sektor 4. Satellitten 'PRUNARIU-1' er i skyggen av jorden, og dekryptering av autorisasjonsnøkkelen er satt på pause. 
+
+Beregnet tid til stabilt signal: [X] minutter. 
+
+RETTFERDIGHETSPROTOKOLL: Mission Control bekrefter at samme tidsforsinkelse vil bli gitt til det andre laget for å sikre en rettferdig avslutning på operasjonen. Bruk ventetiden til diskret rehydrering på gateplan. ⬛📝</div>
+        <button onclick="copyText('msg2', this)">Kopier til utklippstavle</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title">3. STALLING (Byråkratisk Lada)</div>
+        <div class="msg-text" id="msg3">[STATUS: PENDING // DEPARTEMENTET FOR AMBISJONER]
+
+Identitet bekreftet, men den siste signaturen fra Departementet lar vente på seg. Byråkratiet i București beveger seg for øyeblikket saktere enn en Lada i motbakke. 
+
+Nytt oppskytningsvindu: Om [X] minutter. 
+
+ORDRE: Bruk ventetiden til diskret rehydrering på gateplan. Mission Control bekrefter at nøyaktig samme tidsforsinkelse vil bli pålagt det andre laget ved deres ankomst for å sikre operasjonell paritet. Ikke beveg dere mot koordinatene før endelig GO-status er gitt. ⬛📝</div>
+        <button onclick="copyText('msg3', this)">Kopier til utklippstavle</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title">4. STALLING (Sokken i systemet)</div>
+        <div class="msg-text" id="msg4">[MELDING FRA FLIGHT DIRECTOR // SIKKERHETSSONE RØD]
+
+Vi har et kritisk problem. Sokken deres ble funnet, men den har satt seg fast i luftinntaket på oppskytingsrampen. Teknikerne jobber med å fjerne fremmedelementet for å unngå eksplosjon ved ankomst.
+
+Estimert tid til sikker sone: [X] minutter. 
+
+FAIR PLAY: Mens vi rydder opp, beordres dere til diskret rehydrering på gateplan. Det andre laget vil bli holdt tilbake tilsvarende lenge i den rumenske tollen for å utligne denne forsinkelsen. Koden kommer når røyken har lagt seg. 🧦🔥📡</div>
+        <button onclick="copyText('msg4', this)">Kopier til utklippstavle</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title">5. STATUS GO (Etter forsinkelse)</div>
+        <div class="msg-text" id="msg5">[SIGNAL GJENOPPRETTET // STATUS: GO]
+
+Dekryptering fullført. Deres autorisasjonsnøkkel er: LAIKA
+
+Beveg dere umiddelbart til oppskytingsrampen. Flight Director venter. Over og ut. 🛰️🥃</div>
+        <button onclick="copyText('msg5', this)">Kopier til utklippstavle</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title">6. RADIOTAUSHET (Hvis de maser)</div>
+        <div class="msg-text" id="msg6">[MISSION CONTROL]
+
+Vennligst oppretthold radiotaushet. Systemet er opptatt med kalkulasjoner. Over. ⬛</div>
+        <button onclick="copyText('msg6', this)">Kopier til utklippstavle</button>
+    </div>
+
+    <div class="card red-alert">
+        <div class="card-title" style="color: var(--red);">🚨 7. CONTINGENCY BETA (Linea stengt)</div>
+        <div class="msg-text" id="msg7">[CRITICAL OVERRIDE // KODE RØD]
+
+Kandidater. Dekryptering fullført. Nøkkelen er: LAIKA
+
+ADVARSEL: Våre radarer viser at den opprinnelige oppskytningsrampen (Linea) i portalen nettopp har blitt kompromittert av fiendtlige agenter. Ignorer portalens destinasjon! 
+
+Iverksett umiddelbart Contingency Plan Beta. 
+NY DESTINASJON: [SKRIV INN BACKUP-BAR HER]
+
+Beveg dere raskt og under radaren. Flight Director har satt opp en provisorisk base der. Over og ut. 🛰️🚨🥃</div>
+        <button class="red-btn" onclick="copyText('msg7', this)">Kopier Kriseplan</button>
+    </div>
+
+    <div id="dynamic-messages"></div>
+
+    <div style="border-top: 2px dashed var(--dim); padding-top: 20px; margin-top: 30px;">
+        <div class="card-title" style="color: var(--green);">➕ Legg til ny melding i skyen</div>
+        <input type="text" id="new-title" placeholder="Tittel">
+        <textarea id="new-text" placeholder="SMS-tekst her..."></textarea>
+        <button id="save-btn" onclick="saveNewMessage()" style="background: #fff; color: #000;">Lagre i hvelvet ☁️</button>
+        <div id="status">Kobler til satellitt...</div>
+    </div>
+
+    <script>
+        const BIN_ID = '69a976fbae596e708f61eb00'; 
+        const API_KEY = '$2a$10$waiHsAy4JBoQrL3XVPq7heSray8bHcH/61dUhudWfJXE6kyHZ7qvq'; 
+
+        let customMessages = [];
+
+        window.onload = fetchMessages;
+
+        async function fetchMessages() {
+            updateStatus("Synkroniserer...");
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                if (!res.ok) throw new Error("Kunne ikke hente data");
+                const data = await res.json();
+                customMessages = data.record.messages || [];
+                renderMessages();
+                updateStatus("System Online.");
+            } catch (err) { 
+                updateStatus("FEIL: " + err.message); 
+            }
+        }
+
+        function renderMessages() {
+            const container = document.getElementById('dynamic-messages');
+            container.innerHTML = customMessages.map((msg, i) => `
+                <div class="card">
+                    <div class="card-title">${msg.title}</div>
+                    <div class="msg-text" id="dyn${i}">${msg.text}</div>
+                    <div class="btn-group">
+                        <button onclick="copyText('dyn${i}', this)">Kopier</button>
+                        <button class="delete-btn" onclick="deleteMessage(${i})">Slett</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function saveNewMessage() {
+            const titleInput = document.getElementById('new-title');
+            const textInput = document.getElementById('new-text');
+            if (!titleInput.value || !textInput.value) return;
+
+            const btn = document.getElementById('save-btn');
+            btn.disabled = true;
+            customMessages.push({ title: titleInput.value, text: textInput.value });
+            
+            const success = await syncWithCloud();
+            if (success) {
+                titleInput.value = '';
+                textInput.value = '';
+            } else {
+                customMessages.pop();
+            }
+            btn.disabled = false;
+        }
+
+        async function deleteMessage(index) {
+            if (!confirm("Slette melding permanent?")) return;
+            const original = [...customMessages];
+            customMessages.splice(index, 1);
+            const success = await syncWithCloud();
+            if (!success) customMessages = original;
+        }
+
+        async function syncWithCloud() {
+            updateStatus("Oppdaterer skyen...");
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    body: JSON.stringify({ messages: customMessages })
+                });
+                if (!res.ok) throw new Error("Lagringsfeil");
+                updateStatus("System Oppdatert.");
+                renderMessages();
+                return true;
+            } catch (err) {
+                alert("Feil: " + err.message);
+                return false;
+            }
+        }
+
+        function copyText(id, btn) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(function() {
+                const originalText = btn.innerText;
+                btn.innerText = "KOPIERT! ✔️";
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.innerText = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function updateStatus(text) {
+            document.getElementById('status').innerText = text;
+        }
+    </script>
+</body>
+</html>

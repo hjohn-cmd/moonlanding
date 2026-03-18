@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⬛ CLASSIFIED // OP-MOON-LANDING // BRAVO</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Orbitron:wght@400;700;900&display=swap');
+:root{--red:#cc0000;--red-dim:#7a0000;--red-glow:rgba(204,0,0,0.4);--green:#00ff41;--green-dim:#00aa2a;--green-glow:rgba(0,255,65,0.3);--bg:#020304;--bg2:#050810;--text:#e8e8d4;--text-dim:#8a8a7a;--gold:#c9a84c;--team-color:#ff9a3c;}
+*{box-sizing:border-box;margin:0;padding:0;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--red-dim);}
+body{background:var(--bg);font-family:'Share Tech Mono',monospace;color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;cursor:crosshair;padding-bottom:80px;}
+body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");background-size:128px;opacity:0.6;}
+body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.12) 2px,rgba(0,0,0,0.12) 4px);}
+#bg-canvas{position:fixed;inset:0;z-index:0;opacity:0.4;}
+.vignette{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 30%,rgba(0,0,0,0.85) 100%);}
+.watermark-tl,.watermark-br{position:fixed;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:rgba(204,0,0,0.1);z-index:5;pointer-events:none;text-transform:uppercase;line-height:2;}
+.watermark-tl{top:40px;left:16px;}.watermark-br{bottom:14px;right:16px;text-align:right;}
+.stamp-bg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-22deg);font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,14vw,110px);letter-spacing:12px;color:rgba(180,0,0,0.04);z-index:3;pointer-events:none;white-space:nowrap;user-select:none;}
+#status-bar{position:fixed;top:0;left:0;right:0;height:32px;background:rgba(2,3,4,0.97);border-bottom:1px solid #1a0000;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:50;font-size:9px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;}
+.sbar-item{display:flex;align-items:center;gap:6px;}
+.sbar-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:sblink 1.6s infinite;}
+.sbar-dot.red{background:var(--red);box-shadow:0 0 6px var(--red);animation:sblink 0.9s infinite;}
+@keyframes sblink{0%,100%{opacity:1;}50%{opacity:0.15;}}
+#clock-display{font-family:'Orbitron',monospace;font-size:10px;color:var(--green);letter-spacing:3px;}
+#boot{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:900;gap:6px;padding:20px;}
+#boot.hidden{display:none;}
+#boot-inner{width:100%;max-width:620px;}
+.boot-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(16px,3.5vw,26px);letter-spacing:5px;color:var(--red);text-align:center;margin-bottom:30px;text-shadow:0 0 30px var(--red-glow),0 0 60px rgba(204,0,0,0.2);animation:logoPulse 2s ease-in-out infinite;line-height:1.4;}
+@keyframes logoPulse{0%,100%{opacity:1;}50%{opacity:0.7;}}
+.boot-line{font-size:13px;color:var(--green-dim);letter-spacing:1px;opacity:0;animation:fadeIn 0.08s forwards;padding:2px 0;}
+.boot-line.red{color:var(--red);}.boot-line.bright{color:var(--green);font-size:14px;font-weight:bold;}.boot-line.warn{color:var(--gold);}
+.boot-progress-wrap{margin-top:20px;border:1px solid #1a1a1a;height:4px;width:100%;background:#050505;}
+.boot-progress-bar{height:100%;background:linear-gradient(90deg,var(--red-dim),var(--red));width:0%;transition:width 0.05s linear;box-shadow:0 0 10px var(--red-glow);}
+@keyframes fadeIn{to{opacity:1;}}
+#main{display:none;flex-direction:column;align-items:center;width:100%;max-width:860px;padding:70px 24px 0;position:relative;z-index:10;}
+#main.visible{display:flex;}
+#progress-tracker{width:100%;margin-bottom:28px;opacity:0;animation:slideDown 0.6s 0.3s forwards;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;letter-spacing:3px;color:var(--text-dim);margin-bottom:6px;text-transform:uppercase;}
+.progress-label span{color:var(--green);font-family:'Orbitron',monospace;}
+.progress-track{height:3px;background:#111;position:relative;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--red-dim),var(--green));width:0%;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 8px var(--green-glow);}
+.progress-markers{display:flex;justify-content:space-between;margin-top:5px;padding-bottom:18px;}
+.progress-pip{width:8px;height:8px;border:1px solid #333;background:#050505;transition:all 0.3s;}
+.progress-pip.done{background:var(--green);border-color:var(--green);box-shadow:0 0 6px var(--green-glow);}
+.progress-pip.threshold{border-color:var(--red);}
+.progress-pip.threshold.done{background:var(--red);border-color:var(--red);box-shadow:0 0 8px var(--red-glow);}
+.header{width:100%;text-align:center;padding:28px 0 22px;margin-bottom:32px;position:relative;opacity:0;animation:slideDown 0.7s 0.5s forwards;}
+.header-border{position:absolute;inset:0;pointer-events:none;}
+.header-border::before,.header-border::after{content:'';position:absolute;left:0;right:0;height:1px;}
+.header-border::before{top:0;background:linear-gradient(90deg,transparent 0%,var(--red-dim) 20%,var(--red) 50%,var(--red-dim) 80%,transparent 100%);animation:borderPulse 3s ease-in-out infinite;}
+.header-border::after{bottom:0;background:linear-gradient(90deg,transparent 0%,#1a1a1a 20%,var(--red-dim) 50%,#1a1a1a 80%,transparent 100%);}
+@keyframes borderPulse{0%,100%{opacity:0.6;}50%{opacity:1;box-shadow:0 0 8px var(--red-glow);}}
+.bracket-corner{position:absolute;width:24px;height:24px;}
+.bracket-corner.tl{top:6px;left:6px;border-top:1px solid var(--red);border-left:1px solid var(--red);}
+.bracket-corner.tr{top:6px;right:6px;border-top:1px solid var(--red);border-right:1px solid var(--red);}
+.bracket-corner.bl{bottom:6px;left:6px;border-bottom:1px solid var(--red);border-left:1px solid var(--red);}
+.bracket-corner.br{bottom:6px;right:6px;border-bottom:1px solid var(--red);border-right:1px solid var(--red);}
+.directorate-label{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:12px;display:block;opacity:0.8;}
+.op-eyebrow{font-size:12px;letter-spacing:6px;color:var(--text-dim);text-transform:uppercase;margin-bottom:6px;display:block;}
+.header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,10vw,82px);letter-spacing:8px;color:var(--text);line-height:1;animation:titleGlitch 7s infinite;position:relative;}
+.header h1 span{color:var(--red);text-shadow:0 0 30px var(--red-glow),0 0 60px rgba(204,0,0,0.15);}
+.header-sub-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;}
+.header-sub-row::before,.header-sub-row::after{content:'';flex:1;max-width:80px;height:1px;}
+.header-sub-row::before{background:linear-gradient(90deg,transparent,var(--red-dim));}
+.header-sub-row::after{background:linear-gradient(90deg,var(--red-dim),transparent);}
+.header .sub{font-size:13px;letter-spacing:5px;color:var(--text-dim);}
+@keyframes titleGlitch{0%,92%,100%{transform:none;}93%{transform:translateX(-3px) skewX(-1deg);text-shadow:3px 0 var(--red),-3px 0 #0ff;}94%{transform:translateX(3px) skewX(1deg);text-shadow:-3px 0 var(--red),3px 0 #0ff;}95%{transform:translateX(-1px);}96%{transform:none;}}
+.classif-banner{width:100%;background:repeating-linear-gradient(-45deg,var(--red) 0px,var(--red) 10px,#000 10px,#000 20px);padding:7px 0;text-align:center;margin-bottom:28px;opacity:0;animation:slideDown 0.5s 0.8s forwards;position:relative;overflow:hidden;}
+.classif-banner::before{content:'';position:absolute;inset:2px;background:#000;}
+.classif-banner-text{position:relative;font-family:'Orbitron',monospace;font-size:12px;letter-spacing:8px;color:var(--red);text-transform:uppercase;}
+.decrypt-box{width:100%;background:linear-gradient(135deg,#040608,#06080a);border:1px solid #1c1c2a;padding:22px 26px;margin-bottom:32px;opacity:0;animation:slideUp 0.6s 0.9s forwards;position:relative;overflow:hidden;}
+.decrypt-box::before{content:'DEKRYPTERER LOKALISERINGS-DATA...';position:absolute;top:-10px;left:16px;background:var(--bg2);padding:0 10px;font-size:10px;letter-spacing:3px;color:var(--red);font-family:'Orbitron',monospace;}
+.decrypt-box::after{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 28px 28px 0;border-color:transparent var(--red-dim) transparent transparent;opacity:0.6;}
+.decrypt-box .scanbeam{position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,65,0.03),transparent);animation:scanbeam 4s linear infinite;pointer-events:none;}
+@keyframes scanbeam{to{left:200%;}}
+.decrypt-text{font-size:13px;line-height:2;color:var(--text-dim);letter-spacing:0.5px;position:relative;}
+.decrypt-text .reveal{color:var(--text);}
+.decrypt-text .highlight{color:var(--green);}
+.decrypt-text .codename{color:var(--red);font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;}
+.decrypt-text .team-tag{color:var(--team-color);font-family:'Orbitron',monospace;font-size:11px;}
+.video-section{width:100%;opacity:0;animation:slideUp 0.6s 1.1s forwards;margin-bottom:32px;}
+.video-label{font-size:12px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px;font-family:'Orbitron',monospace;}
+.video-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#2a0000,transparent);}
+.video-label .pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);animation:sblink 0.9s infinite;flex-shrink:0;}
+.video-wrapper{position:relative;padding-bottom:56.25%;height:0;border:1px solid #1c1c1c;overflow:hidden;}
+.video-corner{position:absolute;width:16px;height:16px;z-index:3;pointer-events:none;}
+.video-corner.tl{top:0;left:0;border-top:2px solid var(--red);border-left:2px solid var(--red);}
+.video-corner.tr{top:0;right:0;border-top:2px solid var(--red);border-right:2px solid var(--red);}
+.video-corner.bl{bottom:0;left:0;border-bottom:2px solid var(--red);border-left:2px solid var(--red);}
+.video-corner.br{bottom:0;right:0;border-bottom:2px solid var(--red);border-right:2px solid var(--red);}
+.video-wrapper iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.timeline{width:100%;opacity:0;animation:slideUp 0.6s 1.3s forwards;margin-bottom:20px;position:relative;padding-left:30px;}
+.timeline::before{content:'';position:absolute;left:5px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--red),#1a0000 60%,transparent);}
+.phase{position:relative;margin-bottom:28px;background:linear-gradient(135deg,#040608,#06080c);border:1px solid #1a1a22;padding:20px 24px;transition:border-color 0.3s;}
+.phase:hover{border-color:#2a2a3a;}
+.phase::before{content:'';position:absolute;left:-28px;top:22px;width:14px;height:14px;background:var(--bg);border:2px solid var(--red);border-radius:50%;z-index:2;box-shadow:0 0 8px var(--red-glow);}
+.phase.completed::before{background:var(--green);border-color:var(--green);box-shadow:0 0 12px var(--green-glow);}
+.phase::after{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 20px 20px 0;border-color:transparent #1a1a22 transparent transparent;}
+.phase-eyebrow{font-size:11px;letter-spacing:4px;color:var(--red-dim);text-transform:uppercase;margin-bottom:4px;font-family:'Orbitron',monospace;}
+.phase-label{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--text);margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-start;}
+.phase-label .phase-status{font-family:'Orbitron',monospace;font-size:11px;color:var(--red);letter-spacing:2px;margin-top:6px;border:1px solid var(--red-dim);padding:2px 8px;background:rgba(204,0,0,0.05);}
+.phase-label .phase-status.ok{color:var(--green);border-color:var(--green-dim);background:rgba(0,255,65,0.05);}
+.coord-tag{font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:4px;font-family:'Orbitron',monospace;}
+.coord-value{font-size:18px;color:var(--green);letter-spacing:2px;margin-bottom:6px;font-family:'Orbitron',monospace;text-shadow:0 0 12px var(--green-glow);}
+.coord-dest{font-size:14px;color:var(--team-color);letter-spacing:0.5px;margin-bottom:14px;font-weight:bold;}
+.coord-note{font-size:13px;color:var(--text-dim);line-height:1.8;border-top:1px solid #111;padding-top:12px;}
+.highlight-text{color:var(--text);font-weight:bold;}
+.auth-module{margin-top:18px;border-top:1px solid #1a1a1a;padding-top:16px;display:flex;flex-direction:column;gap:10px;position:relative;}
+.auth-module::before{content:'TILGANGSKONTROLL';position:absolute;top:-10px;left:12px;background:#040608;padding:0 8px;font-size:11px;letter-spacing:3px;color:var(--red-dim);font-family:'Orbitron',monospace;}
+.auth-input-group{display:flex;gap:10px;}
+.auth-module input{flex:1;background:#000;border:1px solid var(--red-dim);color:var(--green);font-family:'Orbitron',monospace;font-size:15px;padding:12px 14px;text-transform:uppercase;letter-spacing:4px;outline:none;transition:all 0.3s;caret-color:var(--green);}
+.auth-module input:focus{border-color:var(--red);box-shadow:0 0 0 1px var(--red-dim),inset 0 0 10px rgba(204,0,0,0.1);}
+.auth-module button{background:var(--red);color:#000;border:none;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;padding:0 22px;cursor:pointer;transition:0.2s;letter-spacing:2px;text-transform:uppercase;overflow:hidden;position:relative;}
+.auth-module button:hover{background:#ff1a1a;box-shadow:0 0 20px var(--red-glow);}
+.auth-status{font-size:12px;height:18px;color:var(--red);letter-spacing:2px;font-family:'Orbitron',monospace;}
+.flash-error{animation:flashRed 0.35s 3;}
+#classified-tasks{display:none;flex-direction:column;gap:0;margin-top:24px;}
+.tasks-header{font-size:11px;color:var(--green);margin-bottom:14px;border:1px solid #0d2a1a;padding:12px 14px;background:rgba(0,255,65,0.02);line-height:2;font-family:'Orbitron',monospace;letter-spacing:1px;position:relative;}
+.tasks-header::before{content:'SIKKER KANAL';position:absolute;top:-10px;left:12px;background:#040608;padding:0 8px;font-size:10px;color:var(--green-dim);letter-spacing:3px;}
+.choose-4-banner{display:flex;align-items:center;gap:18px;background:rgba(204,0,0,0.06);border:1px solid var(--red-dim);border-left:4px solid var(--red);padding:14px 18px;margin-bottom:20px;}
+.choose-4-num{font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--red);line-height:1;text-shadow:0 0 20px var(--red-glow);flex-shrink:0;}
+.choose-4-text{font-family:'Orbitron',monospace;font-size:13px;letter-spacing:3px;color:var(--text);line-height:1.6;font-weight:700;}
+.countdown-bar{display:flex;align-items:baseline;gap:10px;padding:10px 18px 14px;border:1px solid var(--red-dim);border-top:none;background:rgba(204,0,0,0.03);margin-bottom:20px;transition:all 0.4s;}
+.countdown-bar.done{border-color:var(--green-dim);background:rgba(0,255,65,0.03);}
+.countdown-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--red);line-height:1;transition:all 0.3s;text-shadow:0 0 16px var(--red-glow);}
+.countdown-bar.done .countdown-num{color:var(--green);text-shadow:0 0 16px var(--green-glow);}
+.countdown-label{font-family:'Orbitron',monospace;font-size:12px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;transition:color 0.3s;}
+.countdown-bar.done .countdown-label{color:var(--green);}
+.mission-task{background:linear-gradient(135deg,#030506,#040608);border:1px solid #181820;border-left:3px solid var(--green-dim);padding:18px 20px;margin-bottom:14px;position:relative;overflow:hidden;transition:border-color 0.3s;}
+.mission-task:hover{border-color:#252530;}
+.mission-task.task-done{border-left-color:#0a3a18;opacity:0.8;}
+.task-number{position:absolute;top:12px;right:14px;font-family:'Orbitron',monospace;font-size:22px;color:rgba(0,255,65,0.06);font-weight:900;letter-spacing:-1px;line-height:1;user-select:none;}
+.mission-task h3{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--green);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase;line-height:1.2;}
+.mission-task p{font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:10px;}
+.mission-task .req{font-size:12px;color:var(--gold);font-weight:bold;line-height:1.7;border-left:2px solid var(--gold);padding-left:10px;}
+.task-complete{margin-top:16px;padding-top:12px;border-top:1px solid #111;}
+.checkbox-label{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;width:fit-content;}
+.task-checkbox{display:none;}
+.checkbox-custom{width:22px;height:22px;border:1px solid #333;background:#000;flex-shrink:0;position:relative;transition:all 0.3s;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 100%);}
+.checkbox-custom::before{content:'';position:absolute;inset:3px;border:1px solid #1a1a1a;transition:all 0.3s;}
+.task-checkbox:checked + .checkbox-custom{background:var(--green);border-color:var(--green);box-shadow:0 0 16px var(--green-glow),0 0 4px var(--green);}
+.task-checkbox:checked + .checkbox-custom::before{border-color:rgba(0,0,0,0.3);}
+.task-checkbox:checked + .checkbox-custom::after{content:'✓';position:absolute;color:#000;font-size:14px;font-weight:900;top:50%;left:50%;transform:translate(-50%,-50%);}
+.checkbox-text{font-size:11px;letter-spacing:4px;color:#666;text-transform:uppercase;font-family:'Orbitron',monospace;transition:color 0.3s;}
+.checkbox-label.is-checked .checkbox-text{color:var(--green);}
+.infoboks{display:none;margin-top:14px;background:linear-gradient(135deg,#010806,#010a08);border:1px solid #0a2016;border-left:3px solid var(--green-dim);padding:16px 18px;animation:infoReveal 0.5s ease forwards;position:relative;}
+.infoboks::before{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 16px 16px 0;border-color:transparent #0a2016 transparent transparent;}
+.info-label{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;color:var(--green-dim);margin-bottom:12px;display:flex;align-items:center;gap:10px;text-transform:uppercase;}
+.info-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#0d2a1a,transparent);}
+.info-content{font-size:13px;color:#9aba9a;line-height:1.9;letter-spacing:0.3px;}
+@keyframes infoReveal{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+#mc-comms{display:none;margin-top:24px;border:1px solid var(--red);background:linear-gradient(135deg,#080000,#0a0000);padding:0;position:relative;animation:commsReveal 0.8s ease forwards;overflow:hidden;}
+#mc-comms::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--red),var(--red-dim),transparent);animation:scanlineMove 1.5s linear infinite;}
+@keyframes scanlineMove{from{background-position:0 0;}to{background-position:200px 0;}}
+.comms-stripes{background:repeating-linear-gradient(-60deg,var(--red) 0px,var(--red) 6px,#1a0000 6px,#1a0000 14px);padding:5px 0;position:relative;}
+.comms-stripes::before{content:'';position:absolute;inset:1px 0;background:#060000;}
+.comms-stripes-text{position:relative;text-align:center;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:6px;color:var(--red);}
+.comms-inner{padding:20px 22px;}
+.comms-header{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;color:var(--red);margin-bottom:4px;display:flex;align-items:center;gap:12px;}
+.comms-blink{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:sblink 0.7s infinite;flex-shrink:0;}
+.comms-sub{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--red-dim);margin-bottom:18px;}
+.comms-body{font-size:14px;color:var(--text-dim);line-height:2;margin-bottom:20px;border-top:1px solid #1a0000;border-bottom:1px solid #1a0000;padding:16px 0;}
+.comms-body strong{color:var(--text);}
+.comms-phone{font-family:'Orbitron',monospace;font-size:16px;color:var(--red);letter-spacing:4px;display:block;margin:8px 0;text-shadow:0 0 12px var(--red-glow);}
+.comms-label{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--red-dim);text-transform:uppercase;margin-bottom:10px;}
+.comms-input-wrap{display:flex;gap:10px;}
+#laika-input{flex:1;background:#050000;border:1px solid var(--red-dim);color:var(--red);font-family:'Orbitron',monospace;font-size:16px;padding:12px 16px;text-transform:uppercase;letter-spacing:8px;outline:none;transition:border 0.3s;caret-color:var(--red);text-align:center;}
+#laika-input:focus{border-color:var(--red);box-shadow:0 0 0 1px var(--red-dim),inset 0 0 12px rgba(204,0,0,0.15);}
+#laika-btn{background:transparent;color:var(--red);border:1px solid var(--red-dim);font-family:'Orbitron',monospace;font-size:12px;font-weight:700;padding:0 22px;letter-spacing:3px;cursor:pointer;transition:0.25s;text-transform:uppercase;}
+#laika-btn:hover{background:var(--red);color:#000;box-shadow:0 0 20px var(--red-glow);}
+#laika-status{font-family:'Orbitron',monospace;font-size:12px;color:var(--red);letter-spacing:2px;margin-top:10px;min-height:18px;}
+@keyframes commsReveal{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+#maal-7-wrap{display:none;margin-top:16px;}
+.maal7-unlock-anim{display:none;flex-direction:column;gap:5px;margin-bottom:18px;padding:14px;border:1px solid #0d2a1a;background:rgba(0,255,65,0.02);}
+.unlock-line{font-family:'Orbitron',monospace;font-size:12px;color:var(--green-dim);letter-spacing:1px;opacity:0;animation:fadeIn 0.15s forwards;}
+.unlock-line.final{color:var(--green);font-weight:bold;}
+.mission-task-final{background:linear-gradient(135deg,#020804,#030a06);border:1px solid var(--green-dim);border-left:3px solid var(--red);padding:20px 22px;position:relative;overflow:hidden;}
+.mission-task-final::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green-dim),transparent);animation:borderPulse 3s ease-in-out infinite;}
+.mission-task-final::after{content:'EXTRACT';position:absolute;top:12px;right:16px;font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:4px;color:rgba(0,255,65,0.04);user-select:none;}
+.mission-task-final h3{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--red);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase;text-shadow:0 0 10px var(--red-glow);}
+.mission-task-final p{font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:10px;}
+.mission-task-final .req{font-size:12px;color:var(--gold);font-weight:bold;border-left:2px solid var(--gold);padding-left:10px;line-height:1.7;}
+.infoboks-final{margin-top:16px;background:rgba(204,0,0,0.04);border:1px solid #1a0000;border-left:3px solid var(--red);padding:16px 18px;}
+.infoboks-final .info-label{color:var(--red);}
+.infoboks-final .info-label::after{background:linear-gradient(90deg,#2a0000,transparent);}
+#main-footer{width:100%;max-width:860px;position:relative;z-index:10;}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;border-top:1px solid #0f0f0f;padding:16px 24px;flex-wrap:wrap;gap:12px;background:linear-gradient(0deg,rgba(204,0,0,0.03),transparent);}
+.footer-destruct{color:var(--red-dim);font-size:10px;width:100%;text-align:center;margin-bottom:4px;letter-spacing:3px;font-family:'Orbitron',monospace;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes decryptReveal{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes flashRed{0%,100%{color:var(--red);}50%{color:#ff6666;}}
+@keyframes maal7In{from{opacity:0;transform:translateY(20px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+.deadline-block{width:100%;margin-bottom:28px;position:relative;overflow:hidden;opacity:0;animation:slideDown 0.7s 0.6s forwards;}
+.deadline-inner{background:#000;border:1px solid var(--red);padding:0;position:relative;overflow:hidden;}
+.deadline-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);animation:scanlineMove 1.2s linear infinite;}
+.deadline-stripe{background:repeating-linear-gradient(-45deg,var(--red) 0px,var(--red) 8px,#000 8px,#000 18px);padding:6px 0;position:relative;}
+.deadline-stripe::before{content:'';position:absolute;inset:2px 0;background:#000;}
+.deadline-stripe-text{position:relative;text-align:center;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:8px;color:var(--red);text-transform:uppercase;}
+.deadline-body{padding:16px 22px 18px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.deadline-clock-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.deadline-clock{font-family:'Orbitron',monospace;font-size:clamp(28px,7vw,48px);color:var(--red);letter-spacing:4px;text-shadow:0 0 20px var(--red-glow),0 0 40px rgba(204,0,0,0.3);line-height:1;font-weight:900;}
+.deadline-clock.urgent{animation:clockPulse 0.5s ease-in-out infinite;}
+.deadline-clock.expired{color:#444;text-shadow:none;}
+@keyframes clockPulse{0%,100%{opacity:1;text-shadow:0 0 20px var(--red-glow);}50%{opacity:0.4;text-shadow:none;}}
+.deadline-clock-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--red-dim);margin-top:4px;text-transform:uppercase;}
+.deadline-divider{width:1px;height:60px;background:linear-gradient(180deg,transparent,var(--red-dim),transparent);flex-shrink:0;}
+.deadline-text{flex:1;min-width:200px;}
+.deadline-heading{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--text);margin-bottom:4px;}
+.deadline-heading span{color:var(--red);}
+.deadline-desc{font-size:12px;color:var(--text-dim);line-height:1.7;letter-spacing:0.5px;}
+.deadline-desc strong{color:var(--text);}
+.deadline-expired-msg{display:none;font-family:'Orbitron',monospace;font-size:11px;color:#555;letter-spacing:2px;margin-top:8px;}
+@media(max-width:600px){.auth-input-group,.comms-input-wrap{flex-direction:column;}#status-bar .sbar-item:nth-child(2){display:none;}.footer-inner{flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="vignette"></div>
+<div class="stamp-bg">CLASSIFIED</div>
+<div class="watermark-tl">Directorate of<br>Extraterrestrial Ambitions<br>Dokument-ID: ORBIT-BRAVO</div>
+<div class="watermark-br">Ugradert informasjon straffes<br>med deportasjon<br>© Mission Control 2025</div>
+<div id="status-bar">
+  <div class="sbar-item"><div class="sbar-dot"></div><span>Mission Control Tilkoblet</span></div>
+  <div class="sbar-item"><span>Protokoll: Sovjet-82</span></div>
+  <div class="sbar-item"><span id="clock-display">--:--:--</span><div class="sbar-dot red"></div><span>Aktiv Overvåking</span></div>
+</div>
+<div id="boot">
+  <div id="boot-inner">
+    <div class="boot-logo">⬛ DIRECTORATE OF EXTRATERRESTRIAL AMBITIONS ⬛</div>
+    <div id="boot-lines"></div>
+    <div class="boot-progress-wrap"><div class="boot-progress-bar" id="boot-bar"></div></div>
+  </div>
+</div>
+<div id="main">
+  <div id="progress-tracker">
+    <div class="progress-label"><span>Oppdragsstatus // Lag Bravo</span><span id="progress-count">0 / 6 Mål Fullført</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-markers">
+      <div class="progress-pip" id="pip-1"></div>
+      <div class="progress-pip" id="pip-2"></div>
+      <div class="progress-pip" id="pip-3"></div>
+      <div class="progress-pip threshold" id="pip-4" style="position:relative;">
+        <span style="position:absolute;top:12px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:1px;color:var(--red);white-space:nowrap;font-family:'Orbitron',monospace;">MIN</span>
+      </div>
+      <div class="progress-pip" id="pip-5"></div>
+      <div class="progress-pip" id="pip-6"></div>
+    </div>
+  </div>
+  <div class="header">
+    <div class="header-border"></div>
+    <div class="bracket-corner tl"></div><div class="bracket-corner tr"></div>
+    <div class="bracket-corner bl"></div><div class="bracket-corner br"></div>
+    <span class="directorate-label">Directorate of Extraterrestrial Ambitions</span>
+    <span class="op-eyebrow">Operasjonsordre // Topphemmelig</span>
+    <h1>OPERATION <span>MOON LANDING</span></h1>
+    <div class="header-sub-row"><span class="sub">Programul Spațial Român // Kosmonaut-Trening // LAG BRAVO</span></div>
+  </div>
+  <div class="classif-banner"><span class="classif-banner-text">⬛ TOPPHEMMELIG // EYES ONLY // LAG BRAVO // IKKE DISTRIBUER ⬛</span></div>
+
+  <div class="deadline-block">
+    <div class="deadline-inner">
+      <div class="deadline-stripe"><span class="deadline-stripe-text">⬛ TIDSKRITISK OPERASJON // OPPSKYTNINGSVINDU LUKKES ⬛</span></div>
+      <div class="deadline-body">
+        <div class="deadline-clock-wrap">
+          <div class="deadline-clock" id="deadline-clock">--:--:--</div>
+          <div class="deadline-clock-label">TID IGJEN</div>
+        </div>
+        <div class="deadline-divider"></div>
+        <div class="deadline-text">
+          <div class="deadline-heading">OPPSKYTNINGSVINDU LUKKES <span>13:55</span></div>
+          <div class="deadline-desc">Alle mål MÅ være gjennomført og dokumentasjon godkjent av Mission Control innen <strong>13:55</strong>. Rakettdrivstoffet er ustabilt og oppskytningsrampen deaktiveres automatisk ved utløp av tidsvinduet. Det andre laget er allerede i felten.</div>
+          <div class="deadline-expired-msg" id="deadline-expired">⚠ OPPSKYTNINGSVINDU LUKKET — KONTAKT FLIGHT DIRECTOR UMIDDELBART</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="decrypt-box">
+    <div class="scanbeam"></div>
+    <div class="decrypt-text">
+      KANDIDAT-GRUPPE: <span class="team-tag">LAG BRAVO</span> &nbsp;|&nbsp;
+      STATUS: <span class="codename">AKTIVERT</span> &nbsp;|&nbsp;
+      LEDET AV: <span class="reveal">FLIGHT DIRECTOR</span><br><br>
+      Kandidater. Hvis dere leser dette, er den kjemiske toleransetesten bestått. Rakettdrivstoffet er fortært. Kroppene deres er klare. <span class="reveal">Velkommen til det hemmelige rumenske romprogrammet.</span><br><br>
+      Deres oppdrag er å reaktivere utstyret, samle inn navigasjonsdata, og forberede dere på oppskytning. Se briefingen fra Mission Control nedenfor. <span class="reveal">Én gang.</span> Følg deretter fasene i streng rekkefølge.<br><br>
+      <span style="color:var(--text-dim);">Dokumentasjon lastes opp til Mission Control via Telegram fortløpende.</span><br><br>
+      <span style="color:var(--red);font-size:11px;letter-spacing:2px;">⚠ DETTE DOKUMENTET SLETTER SEG IKKE AV SEG SELV. DET ER IKKE 2001. MOBILEN DIN ER TRYGG. HUSK Å PUSSE TENNENE. ⚠</span>
+    </div>
+  </div>
+  <div class="video-section">
+    <div class="video-label"><span class="pulse-dot"></span>Innkommende Satellittsending // Flight Director</div>
+    <div class="video-wrapper">
+      <div class="video-corner tl"></div><div class="video-corner tr"></div>
+      <div class="video-corner bl"></div><div class="video-corner br"></div>
+      <iframe src="https://www.youtube.com/embed/rRE1julzOoE?rel=0&color=white&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="phase">
+      <div class="phase-eyebrow">Fase 01 // Aktiv</div>
+      <div class="phase-label">TELEMETRI-KALIBRERING <span class="phase-status">[AKTIV]</span></div>
+      <div class="coord-tag">Skjult Ceaușescu-Antenne // Bravo-Node</div>
+      <div class="coord-value">44°26'09"N &nbsp; 26°06'07"E</div>
+      <div class="coord-dest">📍 Piața Universității — Fontenen</div>
+      <div class="coord-note">
+        Dette er ikke et monument, det er en analog parabolantenne. Den mangler strøm. For å aktivere den, kreves organisk ledningsevne. Laget må bruke sine egne kropper til å forme <span class="highlight-text">"Kors-formasjonen"</span> for å slutte kretsen og låse signalet mot verdensrommet.<br><br>
+        <span style="color:var(--gold);font-weight:bold;">⚠ KRAV: Form kropper som et kors foran antennen. Ta bilde av hele laget i posisjon. Last opp bildet i Telegram til Mission Control. Etter opplasting av dokumentasjon, fortsett med "Prunariu-protokollen".</span>
+      </div>
+    </div>
+    <div class="phase" id="phase-2-box">
+      <div class="phase-eyebrow">Fase 02 // Låst</div>
+      <div class="phase-label">PRUNARIU-PROTOKOLLEN <span class="phase-status" id="fase2-status">[LÅST]</span></div>
+      <div class="coord-tag">Lokasjon // Gjenlevende Bakkemannskap</div>
+      <div class="coord-dest" style="color:#ff3366;">📍 The Urbanist (Strada Căldărari 3)</div>
+      <div class="coord-note">
+        I kontraspionasjens verden er det imperativt å benytte seg av de aller sikreste kodene. Fienden forventer maskulinitet og aggresjon — vi kontrer med psykologisk forvirring. Lokaliser vår kontaktperson (Ingeniøren) bak bardisken.<br><br>
+        For å bevise at dere kan opprettholde <span class="highlight-text">"Deep Cover"</span> under ubehagelige forhold, krever Mission Control at dere leverer den verbale krypteringsnøkkelen med iskald, dødsens seriøs overbevisning.<br><br>
+        Gå til baren, se Ingeniøren dypt i øynene (uten å trekke på smilebåndet), og initier følgende utveksling:<br><br>
+        1. En av dere sier: <span class="highlight-text">"Sunt o prințesă dulce"</span><br>
+        <span style="font-size:13px;color:#666;padding-left:16px;">↳ uttales: <em>sunt o prin-tse-suh dul-che</em></span><br><br>
+        2. Ingeniøren spør: "Ce cauți?" <span style="font-size:13px;color:#666;"><em>(che kow-tsee?)</em></span><br><br>
+        3. Dere svarer i kor <em style="color:var(--text-dim);">(jeg anbefaler å øve først)</em>: <span class="highlight-text">"Căutăm demnitate"</span><br>
+        <span style="font-size:13px;color:#666;padding-left:16px;">↳ uttales: <em>kuh-oo-tuhm dem-ni-tah-te</em></span><br><br>
+        Enhver antydning til latter eller nøling betyr at coveret deres er blåst. Ved vellykket utveksling vil Ingeniøren oppgi den krypterte koden for å låse opp resten av systemet, samt livsviktig kjemisk stabiliseringsvæske.<br><br>
+        <span style="color:var(--gold);font-weight:bold;">⚠ KRAV: Hele utvekslingen skal filmes og lastes opp til Mission Control via Telegram. Skriv deretter inn koden dere mottar.</span>
+      </div>
+      <div class="auth-module">
+        <div class="auth-status" id="auth-status">// VENTER PÅ INNDATA...</div>
+        <div class="auth-input-group">
+          <input type="text" id="override-code" placeholder="INNTAST KODE" autocomplete="off" spellcheck="false">
+          <button id="auth-btn" onclick="verifyPhase2Code()">DEKRYPTER</button>
+        </div>
+      </div>
+      <div id="classified-tasks">
+        <div class="tasks-header">&gt; NEDLASTING FULLFØRT: FLIGHT MANUAL // NAVIGASJONSKALIBRERING<br>&gt; UTFØR MINST 4 AV DE 6 MÅLENE NEDENFOR.<br>&gt; MÅL 7 ER OBLIGATORISK FØR OPPSKYTNING OG LÅSES OPP VED 4 FULLFØRTE MÅL + GODKJENNING FRA MISSION CONTROL.</div>
+        <div class="choose-4-banner">
+          <span class="choose-4-num">4</span>
+          <span class="choose-4-text">AV 6 MÅL MÅ FULLFØRES<br><span style="font-size:11px;letter-spacing:2px;color:var(--text-dim);">VELG FRITT — MÅL 7 ER OBLIGATORISK</span></span>
+        </div>
+        <div class="countdown-bar" id="countdown-bar">
+          <span class="countdown-num" id="countdown-num">4</span>
+          <span class="countdown-label" id="countdown-label">gjenstår</span>
+        </div>
+        <!-- MÅL 1 -->
+        <div class="mission-task" id="task-1"><span class="task-number">01</span>
+          <h3>MÅL 1 // Verifisering av Gullreserver — CEC-Palasset</h3>
+          <p>Lokaliser CEC-palassets hovedinngang på Calea Victoriei 13 — den massive glasskuppelen er umulig å overse. Forsøk å bestikke dere inn gjennom porten.</p>
+          <div class="req">&gt; KRAV: Én person spiller vakt ved inngangen. Resten av laget forsøker å bestikke seg forbi — med kreative virkemidler. Bildebevis av hele scenen (inkludert vakt og bestikkere) sendes Base.</div>
+          <div class="task-complete"><label class="checkbox-label" id="lbl-1"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-1','info-1',1)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
+          <div class="infoboks" id="info-1"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Bygget i 1900 på tomten til et gammelt kloster, og er et kroneksempel på hvorfor București en gang ble kalt "Lille Paris". Arkitekten var fransk, og den massive kuppelen er konstruert av glass og stål fra nøyaktig samme periode og stil som Eiffeltårnet. Under kommunisttiden var dette en av svært få banker som fikk fortsette driften uavbrutt, da diktaturet trengte en "folkets sparebank" for å samle inn innbyggernes penger. At bygget har overlevd både de massive jordskjelvene i 1940 og 1977, samt Ceaușescus bulldosere, er et lite mirakel.</div></div>
+        </div>
+        <!-- MÅL 2 -->
+        <div class="mission-task" id="task-2"><span class="task-number">02</span>
+          <h3>MÅL 2 // Datakryptering — Cărturești Carusel</h3>
+          <p>Infiltrer byens vakreste bokhandel. Finn en bok med den mest uuttalelige tittelen på rumensk.</p>
+          <div class="req">&gt; KRAV: Video av én kosmonaut fra laget som forsøker å lese tittelen høyt og tydelig.</div>
+          <div class="task-complete"><label class="checkbox-label" id="lbl-2"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-2','info-2',2)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
+          <div class="infoboks" id="info-2"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Kjent som "Lysets karusell" (Caruselul Luminii). Denne fantastiske bygningen ble reist i 1903 av den styrtrike greske bankier-familien Chrissoveloni. I 1948 slo kommunistregimet til, konfiskerte bygget, og forvandlet det til et trist og grått statlig varehus. Etter kommunismens fall forfalt bygget til en farlig ruin. Oldebarnet til den opprinnelige eieren brukte 24 år i byråkratiet for å vinne bygget tilbake. I 2015 gjenoppsto det fra ruinene som en av verdens vakreste bokhandlere, med seks etasjer og sveipende hvite trapper. Et visuelt mesterverk – og det perfekte stedet å gjemme hemmelige koder.</div></div>
+        </div>
+        <!-- MÅL 3 -->
+        <div class="mission-task" id="task-3"><span class="task-number">03</span>
+          <h3>MÅL 3 // Atmosfærisk Velsignelse — Stavropoleos</h3>
+          <p>Finn den gjemte, ortodokse kirken fra 1724 i kaoset. Be om trygg ferdsel gjennom atmosfæren.</p>
+          <div class="req">&gt; KRAV: Lagfoto ved inngangen — alle med hendene foldet og blikket ærbødig rettet mot stjernene.</div>
+          <div class="task-complete"><label class="checkbox-label" id="lbl-3"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-3','info-3',3)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
+          <div class="infoboks" id="info-3"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Oppført i 1724 av en gresk munk. Kirken er kanskje det mest perfekte eksempelet på "Brâncovenesc-stil" – en helt unik rumensk arkitektur som blander bysantinske, osmanske, renessanse- og barokkelementer. Navnet kommer fra gresk ("Stauropolis" – Korsets by). Under kommunismen, da utallige kirker ble jevnet med jorden, ble denne reddet fordi den rett og slett ble ansett som et uerstattelig kunstverk. Gårdsplassen bak er fylt med gravsteiner og fragmenter fra andre kirker i byen som ikke var like heldige og ble ødelagt av regimet.</div></div>
+        </div>
+        <!-- MÅL 4 -->
+        <div class="mission-task" id="task-4"><span class="task-number">04</span>
+          <h3>MÅL 4 // Næringsinntak — Gateutsalg / Bakeri</h3>
+          <p>Lokaliser et vilkårlig gateutsalg eller lokalt bakeri. Spør en ansatt om anbefaling på dagens beste brensel.</p>
+          <div class="req">&gt; KRAV: Bestill én porsjon av det de anbefaler. Del den med resten av laget. Bildebevis sendes Base — med synlig entusiasme. Og obligatorisk tommel opp/ned.</div>
+          <div class="task-complete"><label class="checkbox-label" id="lbl-4"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-4','info-4',4)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
+          <div class="infoboks" id="info-4"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Velkommen til den rumenske folkesjelen. "Covrigi" (rumenske kringler) sies å ha blitt introdusert av utspekulerte greske kjøpmenn på 1800-tallet. De delte dem ut gratis på vertshusene for å gjøre gjestene tørste, noe som fikk vinsalget til å skyte i været. I dag er dette Romanias ubestridte nasjonalsnacks og den ultimate "on-the-go" maten for folk på farten. Det selges millioner av disse hver eneste dag. Den mest klassiske varianten er drysset med store saltkorn eller valmuefrø.</div></div>
+        </div>
+        <!-- MÅL 5 -->
+        <div class="mission-task" id="task-5"><span class="task-number">05</span>
+          <h3>MÅL 5 // Historisk Telemetri — Lipscani</h3>
+          <p>Finn et tydelig spor fra The Red Decade (kommunisttiden) — arkitektur, et skilt, et symbol.</p>
+          <div class="req">&gt; KRAV: Foto av objektet sendes Base. Det legges langt mer vekt på en overbevisende og engasjerende forklaring i Telegram enn akkurat hva dere har valgt å fotografere — vær kreative.</div>
+          <div class="task-complete"><label class="checkbox-label" id="lbl-5"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-5','info-5',5)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
+          <div class="infoboks" id="info-5"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Det historiske sentrumet du står i nå overlevde bare med et nødskrik. På 1980-tallet ble diktatoren Nicolae Ceaușescu besatt av å bygge sitt absurde Parlamentspalass. For å få plass, jevnet han en femtedel av det historiske București med jorden – inkludert titusenvis av hjem og historiske monumenter. Gamlebyen ble kun spart fordi regimet innså at det ville bli for dyrt og komplisert å flytte det massive nettverket av industri og underjordiske rør som lå her. I stedet valgte de å bygge gigantiske, grå betongblokker rundt hele bydelen for å "gjemme bort" den borgerlige arkitekturen.</div></div>
+        </div>
+        <!-- MÅL 6 -->
+        <div class="mission-task" id="task-6"><span class="task-number">06</span>
+          <h3>MÅL 6 // Tidskapselen — Hanul lui Manuc</h3>
+          <p>Infiltrer bakgården til Europas eldste fungerende hotellbygning (i dag en restaurant) på Strada Franceză 62.</p>
+          <div class="req">&gt; KRAV: Lagbilde ved vinfatene eller tretrappene. Foran inngangen til bakgården godkjennes, men da skal innlevelsen i poseringen være 100%. Se ut som dere flykter fra 1808 (lykke til!). Ingen smil!</div>
+          <div class="task-complete"><label class="checkbox-label" id="lbl-6"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-6','info-6',6)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
+          <div class="infoboks" id="info-6"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Bygget i 1808 av den styrtrike armenske kjøpmannen (og diplomaten/spionen) Emanuel Mârzaian, bedre kjent som Manuc Bei. Dette var opprinnelig byens viktigste vertshus og fungerte som det absolutte sentrum for handel på Balkan. I dag huser den historiske bygningen en av byens mest kjente restauranter. Den spektakulære arkitekturen med de massive trebalkongene rundt en lukket bakgård var i sin tid designet for å beskytte gjester og verdisaker mot røvere. Det var nettopp her inne, i dypeste hemmelighet, at fredsavtalen som avsluttet den russisk-tyrkiske krigen ble forhandlet frem og signert i 1812.</div></div>
+        </div>
+        <!-- COMMS -->
+        <div id="mc-comms">
+          <div class="comms-stripes"><span class="comms-stripes-text">⬛ KRYPTERT TRANSMISJON // PRIORITET ALFA ⬛</span></div>
+          <div class="comms-inner">
+            <div class="comms-header"><span class="comms-blink"></span>MELDING FRA MISSION CONTROL</div>
+            <div class="comms-sub">// INNKOMMENDE // SIKKER KANAL // OVERVÅKET //</div>
+            <div class="comms-body">
+              For å motta koordinater for <strong>Final Extraction</strong>, kontakt Mission Control med følgende melding via skuddsikkert meldingssystem (SMS):<br><br>
+              <span class="comms-phone">📡 +47 980 21 035</span>
+              <span style="display:block;margin:10px 0;padding:12px 16px;border:1px solid #2a0000;background:rgba(204,0,0,0.04);font-size:15px;letter-spacing:1px;color:var(--text);line-height:1.6;">"Bravo ligner på bravur. Ørnen er rastløs, hvor fanken la jeg sokken?"</span>
+            </div>
+            <div class="comms-label">// INNTAST DEKRYPTERINGSNØKKEL:</div>
+            <div class="comms-input-wrap">
+              <input type="text" id="laika-input" placeholder="· · · · ·" autocomplete="off" spellcheck="false">
+              <button id="laika-btn" onclick="verifyLaika()">DEKRYPTER</button>
+            </div>
+            <div id="laika-status"></div>
+          </div>
+        </div>
+        <!-- MÅL 7 -->
+        <div id="maal-7-wrap">
+          <div class="maal7-unlock-anim" id="unlock-anim"></div>
+          <div class="mission-task-final">
+            <h3>MÅL 7 // OPPSKYTNINGSRAMPEN — FINAL EXTRACTION</h3>
+            <p>Finn utestedet "Linea / Closer to the Moon". Infiltrer gantry-kranen (heisen).</p>
+            <div class="req">&gt; KRAV: Første lag som sender bilde av heisdøren fra innsiden vinner runden — Flight Director venter på toppen.</div>
+            <div class="infoboks-final">
+              <div class="info-label" style="color:var(--red);">▶ MISSION ACCOMPLISHED // AVKLASSIFISERT</div>
+              <div class="info-content">MISSION ACCOMPLISHED. Dere har overlevd g-kreftene, navigert gjennom fiendtlig territorium, og unngått kontraspionasjen. "Closer to the Moon" er ikke bare et navn, det er det offisielle endepunktet for den rumenske romfartsopplæringen. Finn Flight Director på taket. Rapporter for umiddelbar de-briefing, rehydrering med sterke væsker, og den offisielle utdelingen av vitnemål. Første runde betales av taperlaget.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="main-footer" style="display:none;">
+  <div class="footer-inner">
+    <span class="footer-destruct">⬛ AVSLØRING AV ROMPROGRAMMET VIL FØRE TIL UMIDDELBAR DEPORTASJON ⬛</span>
+    <span>Dokument-ID: ORBIT-BRAVO-BETA</span>
+    <span>Klassifisert: Topphemmelig</span>
+    <span>Mission Control // Overvåker</span>
+  </div>
+</div>
+<script>
+function updateClock(){const n=new Date(),h=String(n.getHours()).padStart(2,'0'),m=String(n.getMinutes()).padStart(2,'0'),s=String(n.getSeconds()).padStart(2,'0'),el=document.getElementById('clock-display');if(el)el.textContent=`${h}:${m}:${s}`;}
+setInterval(updateClock,1000);updateClock();
+function updateDeadline(){const now=new Date();const deadline=new Date(now);deadline.setHours(13,55,0,0);const diff=deadline-now;const el=document.getElementById('deadline-clock');const expEl=document.getElementById('deadline-expired');if(!el)return;if(diff<=0){el.textContent='00:00:00';el.classList.add('expired');el.classList.remove('urgent');if(expEl)expEl.style.display='block';return;}const h=Math.floor(diff/3600000);const m=Math.floor((diff%3600000)/60000);const s=Math.floor((diff%60000)/1000);el.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;if(diff<900000)el.classList.add('urgent');else el.classList.remove('urgent');}
+setInterval(updateDeadline,1000);updateDeadline();
+(function(){const canvas=document.getElementById('bg-canvas');const ctx=canvas.getContext('2d');let w,h;function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}window.addEventListener('resize',resize);resize();const dots=[];for(let i=0;i<80;i++)dots.push({x:Math.random()*1000,y:Math.random()*1000,vx:(Math.random()-0.5)*0.2,vy:(Math.random()-0.5)*0.2,r:Math.random()*1.5+0.5});function draw(){ctx.clearRect(0,0,w,h);const sx=w/1000,sy=h/1000;for(let d of dots){d.x+=d.vx;d.y+=d.vy;if(d.x<0)d.x=1000;if(d.x>1000)d.x=0;if(d.y<0)d.y=1000;if(d.y>1000)d.y=0;}for(let i=0;i<dots.length;i++)for(let j=i+1;j<dots.length;j++){const dx=(dots[i].x-dots[j].x)*sx,dy=(dots[i].y-dots[j].y)*sy,dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){ctx.beginPath();ctx.strokeStyle=`rgba(100,0,0,${(1-dist/120)*0.3})`;ctx.lineWidth=0.5;ctx.moveTo(dots[i].x*sx,dots[i].y*sy);ctx.lineTo(dots[j].x*sx,dots[j].y*sy);ctx.stroke();}}for(let d of dots){ctx.beginPath();ctx.fillStyle='rgba(150,0,0,0.4)';ctx.arc(d.x*sx,d.y*sy,d.r,0,Math.PI*2);ctx.fill();}requestAnimationFrame(draw);}draw();})();
+async function runBootSequence(){const bootLines=document.getElementById('boot-lines'),bar=document.getElementById('boot-bar'),main=document.getElementById('main'),footer=document.getElementById('main-footer');const addLine=(text,delay,cls='')=>new Promise(resolve=>{setTimeout(()=>{const line=document.createElement('div');line.className=`boot-line ${cls}`;line.style.animationDelay='0s';line.textContent=text;bootLines.appendChild(line);resolve();},delay);});const setBar=p=>{bar.style.width=p+'%';};await addLine('> INITIALISERER SIKKER OPPSTART...',0);setBar(8);await addLine('> SJEKKER MASKINVARE-INTEGRITET...',300);setBar(16);await addLine('> VERIFISERER BIOMETRISK SIGNATUR...',500);setBar(24);const ua=navigator.userAgent;let device='UKJENT TERMINAL';if(ua.includes('iPhone'))device='APPLE IPHONE [MODIFICERT]';else if(ua.includes('iPad'))device='APPLE IPAD [MODIFICERT]';else if(ua.includes('Android'))device='ANDROID-ENHET [KRYPTERT]';else if(ua.includes('Mac OS'))device='MACBOOK/MAC [KRYPTERT]';else if(ua.includes('Windows'))device='WINDOWS PC [KRYPTERT]';let ipData={ip:'SKJULT',city:'UKJENT',org:'ROAMING'};try{const r=await fetch('https://ipapi.co/json/');if(r.ok)ipData=await r.json();}catch(e){}await addLine(`> ENHET IDENTIFISERT: ${device}`,700);setBar(36);await addLine(`> NETTVERKSSPORING AKTIV... [${ipData.ip}]`,800,'warn');setBar(48);await addLine(`> LOKASJON LÅST: ${ipData.city}`,700,'bright');setBar(56);await addLine(`> LEVERANDØR: ${ipData.org}`,500,'bright');setBar(64);await addLine('> KRYPTERER KOMMUNIKASJONSKANAL...',800);setBar(72);await addLine('> AUTENTISERER KANDIDAT-ID...',700);setBar(80);await addLine('> ID: BEKREFTET // KLARERING: BRAVO',400,'bright');setBar(88);await addLine('> LASTER KLASSIFISERT FLIGHT MANUAL...',600);setBar(96);await addLine('> ████████████████ 100% FULLFØRT',700,'bright');setBar(100);await addLine('',300);await addLine('⬛  TILGANG INNVILGET — WELCOME, KOSMONAUT  ⬛',200,'red');setTimeout(()=>{document.getElementById('boot').classList.add('hidden');main.classList.add('visible');footer.style.display='block';},1400);}
+runBootSequence();
+function verifyPhase2Code(){const f=document.getElementById('override-code'),input=f.value.toUpperCase().trim(),s=document.getElementById('auth-status'),btn=document.getElementById('auth-btn'),tc=document.getElementById('classified-tasks'),pb=document.getElementById('phase-2-box'),fs=document.getElementById('fase2-status');if(input==='PRUNARIU-61'){s.style.color='var(--green)';s.textContent='// OVERSTYRING GODKJENT — LASTER NED DATA...';f.style.borderColor='var(--green)';f.style.color='var(--green)';f.disabled=true;btn.style.background='var(--green)';btn.style.color='#000';btn.textContent='ÅPENT';btn.disabled=true;pb.classList.add('completed');fs.textContent='[FULLFØRT]';fs.classList.add('ok');setTimeout(()=>{s.textContent='// FLIGHT MANUAL DEKRYPTERT';tc.style.display='flex';tc.style.animation='decryptReveal 0.8s forwards';setTimeout(()=>tc.scrollIntoView({behavior:'smooth',block:'start'}),120);},1600);}else{s.textContent='// FEIL KODE — TILGANG NEKTET — FORSØK LOGGET';s.classList.remove('flash-error');void s.offsetWidth;s.classList.add('flash-error');f.value='';f.style.borderColor='var(--red)';setTimeout(()=>{f.style.borderColor='var(--red-dim)';},800);}}
+document.getElementById('override-code').addEventListener('keypress',e=>{if(e.key==='Enter')verifyPhase2Code();});
+let checkedCount=0,commsShown=false;const completedTasks=new Set();
+function updateProgress(){const count=completedTasks.size;document.getElementById('progress-fill').style.width=(count/6*100)+'%';document.getElementById('progress-count').textContent=`${count} / 6 Mål Fullført`;for(let i=1;i<=6;i++){const p=document.getElementById(`pip-${i}`);completedTasks.has(i)?p.classList.add('done'):p.classList.remove('done');}const remaining=Math.max(0,4-count);const numEl=document.getElementById('countdown-num');const lblEl=document.getElementById('countdown-label');const barEl=document.getElementById('countdown-bar');if(numEl&&lblEl&&barEl){if(remaining===0){numEl.textContent='✓';lblEl.textContent='minimum nådd';barEl.classList.add('done');}else{numEl.textContent=remaining;lblEl.textContent=remaining===1?'gjenstår for å kontakte Mission Control':'gjenstår for å kontakte Mission Control';barEl.classList.remove('done');}}}
+function handleCheckbox(cb,lblId,infoId,taskNum){const lbl=document.getElementById(lblId),info=document.getElementById(infoId);if(cb.checked){completedTasks.add(taskNum);lbl.classList.add('is-checked');info.style.display='block';setTimeout(()=>info.scrollIntoView({behavior:'smooth',block:'nearest'}),80);}else{completedTasks.delete(taskNum);lbl.classList.remove('is-checked');info.style.display='none';}checkedCount=completedTasks.size;updateProgress();if(checkedCount>=4&&!commsShown){commsShown=true;const c=document.getElementById('mc-comms');c.style.display='block';setTimeout(()=>c.scrollIntoView({behavior:'smooth',block:'start'}),250);}}
+function verifyLaika(){const input=document.getElementById('laika-input').value.toUpperCase().trim(),status=document.getElementById('laika-status');if(input==='LAIKA'){status.style.color='var(--green)';status.textContent='// NØKKEL GODKJENT — INITIERER OPPSKYTNINGSSEKVENS...';document.getElementById('laika-input').disabled=true;document.getElementById('laika-btn').disabled=true;setTimeout(()=>{document.getElementById('mc-comms').style.display='none';runUnlockAnimation();},1200);}else{status.style.color='var(--red)';status.textContent='// FEIL NØKKEL — TILGANG NEKTET';document.getElementById('laika-input').value='';document.getElementById('laika-input').style.borderColor='var(--red)';setTimeout(()=>{document.getElementById('laika-input').style.borderColor='var(--red-dim)';},600);}}
+document.addEventListener('DOMContentLoaded',()=>{const li=document.getElementById('laika-input');if(li)li.addEventListener('keypress',e=>{if(e.key==='Enter')verifyLaika();});});
+async function runUnlockAnimation(){const anim=document.getElementById('unlock-anim'),m7=document.getElementById('maal-7-wrap');anim.style.display='flex';m7.style.display='block';const lines=[{t:'> LAIKA-PROTOKOLL AUTENTISERT...',f:false},{t:'> DEKRYPTERER EXTRACTION-VEKTOR...',f:false},{t:'> NETTVERKSTILKOBLING SIKRET...',f:false},{t:"> FINALE KOORDINATER: 44°25'58\"N 26°05'49\"E",f:false},{t:'> CLEARANCE LEVEL: OMEGA',f:false},{t:'> ███████████████████ MÅL 7 AVKLASSIFISERT',f:true}];for(let i=0;i<lines.length;i++){await new Promise(r=>setTimeout(r,320));const el=document.createElement('div');el.className=`unlock-line${lines[i].f?' final':''}`;el.style.animationDelay='0s';el.textContent=lines[i].t;anim.appendChild(el);}await new Promise(r=>setTimeout(r,500));m7.style.animation='maal7In 0.9s cubic-bezier(0.16,1,0.3,1) forwards';m7.scrollIntoView({behavior:'smooth',block:'start'});}
+</script>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FELTORDRE 01 // KJEMISK KALIBRERING</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .letter {
+    width: 148mm;
+    min-height: 210mm;
+    background: #0a0a08;
+    color: #d8d8c4;
+    padding: 14mm 13mm 18mm;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #2a2a22;
+  }
+
+  .letter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255,255,220,0.012) 3px,
+      rgba(255,255,220,0.012) 4px
+    );
+    pointer-events: none;
+  }
+
+  .letter::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8a0000, #cc0000, #8a0000, transparent);
+  }
+
+  .corner { position: absolute; width: 14px; height: 14px; }
+  .corner.tl { top: 7mm; left: 7mm; border-top: 1px solid #cc0000; border-left: 1px solid #cc0000; }
+  .corner.tr { top: 7mm; right: 7mm; border-top: 1px solid #cc0000; border-right: 1px solid #cc0000; }
+  .corner.bl { bottom: 7mm; left: 7mm; border-bottom: 1px solid #cc0000; border-left: 1px solid #cc0000; }
+  .corner.br { bottom: 7mm; right: 7mm; border-bottom: 1px solid #cc0000; border-right: 1px solid #cc0000; }
+
+  .stamp {
+    position: absolute;
+    top: 18mm; right: 10mm;
+    border: 2px solid #cc0000;
+    color: #cc0000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11pt;
+    letter-spacing: 4px;
+    padding: 2px 7px;
+    transform: rotate(14deg);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .header {
+    text-align: center;
+    border-bottom: 1px solid #222;
+    padding-bottom: 6mm;
+    margin-bottom: 5mm;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #4a0000, transparent);
+  }
+
+  .org-label {
+    font-size: 6.5pt;
+    letter-spacing: 3px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 3mm;
+    display: block;
+  }
+
+  .op-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28pt;
+    letter-spacing: 5px;
+    color: #e8e8d0;
+    line-height: 1;
+    margin-bottom: 1mm;
+  }
+
+  .op-title span { color: #cc0000; }
+
+  .op-sub {
+    font-size: 6pt;
+    letter-spacing: 3px;
+    color: #555;
+    text-transform: uppercase;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 6pt;
+    letter-spacing: 1.5px;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 5mm;
+    padding-bottom: 4mm;
+    border-bottom: 1px dashed #1e1e1e;
+  }
+
+  .section-label {
+    font-size: 6pt;
+    letter-spacing: 4px;
+    color: #cc0000;
+    text-transform: uppercase;
+    margin-bottom: 2mm;
+    display: block;
+  }
+
+  .body-text {
+    font-size: 8.5pt;
+    line-height: 1.8;
+    color: #aaa;
+    margin-bottom: 5mm;
+  }
+
+  .body-text .highlight { color: #d8d8c4; }
+  .body-text .red { color: #cc0000; }
+  .body-text .gold { color: #b89040; }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4mm 0;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1e1e1e;
+  }
+  .divider span {
+    font-size: 6pt;
+    letter-spacing: 3px;
+    color: #444;
+    text-transform: uppercase;
+  }
+
+  /* INVENTORY TABLE */
+  .inventory {
+    border: 1px solid #1e1e16;
+    background: #080806;
+    margin-bottom: 5mm;
+  }
+
+  .inventory-row {
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+    padding: 3.5mm 5mm;
+    border-bottom: 1px solid #121210;
+  }
+
+  .inventory-row:last-child { border-bottom: none; }
+
+  .inv-icon {
+    font-size: 16pt;
+    flex-shrink: 0;
+    width: 9mm;
+    text-align: center;
+    opacity: 0.85;
+  }
+
+  .inv-body { flex: 1; }
+
+  .inv-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11pt;
+    letter-spacing: 2px;
+    color: #d8d8c4;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .inv-desc {
+    font-size: 6.5pt;
+    letter-spacing: 1px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .inv-qty {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16pt;
+    color: #cc0000;
+    flex-shrink: 0;
+    letter-spacing: 1px;
+    line-height: 1;
+    text-align: right;
+  }
+
+  .inv-qty span {
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 5pt;
+    color: #444;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ORDER BOX */
+  .order-box {
+    border: 1px solid #2a1a00;
+    border-left: 3px solid #996600;
+    background: #08070300;
+    padding: 4mm 5mm;
+    margin-bottom: 5mm;
+  }
+
+  .order-box .order-label {
+    font-size: 6pt;
+    letter-spacing: 3px;
+    color: #996600;
+    text-transform: uppercase;
+    margin-bottom: 2mm;
+    display: block;
+  }
+
+  .order-box .order-text {
+    font-size: 8pt;
+    line-height: 1.8;
+    color: #999;
+  }
+
+  .order-box .order-text .highlight { color: #d8d8c4; }
+
+  /* FINAL INSTRUCTION */
+  .final-instruction {
+    border: 1px solid #1a1a1a;
+    border-top: 2px solid #cc0000;
+    background: #060604;
+    padding: 4mm 5mm;
+    margin-bottom: 5mm;
+    text-align: center;
+  }
+
+  .final-instruction .fi-eyebrow {
+    font-size: 6pt;
+    letter-spacing: 4px;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 2mm;
+    display: block;
+  }
+
+  .final-instruction .fi-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13pt;
+    letter-spacing: 2px;
+    color: #d8d8c4;
+    line-height: 1.4;
+  }
+
+  .final-instruction .fi-text span { color: #cc0000; }
+
+  .footer {
+    position: absolute;
+    bottom: 10mm;
+    left: 13mm; right: 13mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 5.5pt;
+    letter-spacing: 1.5px;
+    color: #333;
+    text-transform: uppercase;
+    border-top: 1px solid #161616;
+    padding-top: 3mm;
+  }
+
+  .moon-bg {
+    position: absolute;
+    bottom: -30mm; right: -20mm;
+    width: 70mm; height: 70mm;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #1a1a14, #0a0a08);
+    border: 1px solid #1e1e16;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* PRINT STYLES */
+  @media print {
+    @page { size: A5; margin: 0; }
+    body { background: none; margin: 0; }
+    .print-btn { display: none; }
+    .moon-bg { display: none; }
+    .letter::before { display: none; }
+    .letter {
+      border: none;
+      width: 148mm;
+      min-height: 210mm;
+      page-break-after: always;
+      background: #ffffff !important;
+      color: #111 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .org-label { color: #555 !important; }
+    .op-title { color: #111 !important; }
+    .op-title span { color: #aa0000 !important; }
+    .op-sub { color: #666 !important; }
+    .stamp { color: #cc0000 !important; border-color: #cc0000 !important; opacity: 0.15 !important; }
+    .meta { color: #666 !important; border-bottom-color: #ccc !important; }
+    .section-label { color: #aa0000 !important; }
+    .body-text { color: #333 !important; }
+    .body-text .highlight { color: #111 !important; }
+    .body-text .red { color: #aa0000 !important; }
+    .body-text .gold { color: #7a5500 !important; }
+    .divider::before, .divider::after { background: #ccc !important; }
+    .divider span { color: #888 !important; }
+    .inventory { border-color: #ccc !important; background: #f8f8f4 !important; }
+    .inventory-row { border-bottom-color: #e0e0da !important; }
+    .inv-name { color: #111 !important; }
+    .inv-desc { color: #666 !important; }
+    .inv-qty { color: #aa0000 !important; }
+    .inv-qty span { color: #999 !important; }
+    .order-box { border-color: #ccc !important; border-left-color: #996600 !important; background: #fdf8f0 !important; }
+    .order-box .order-label { color: #7a5500 !important; }
+    .order-box .order-text { color: #444 !important; }
+    .order-box .order-text .highlight { color: #111 !important; }
+    .final-instruction { border-color: #ccc !important; border-top-color: #aa0000 !important; background: #f8f8f8 !important; }
+    .final-instruction .fi-eyebrow { color: #888 !important; }
+    .final-instruction .fi-text { color: #111 !important; }
+    .final-instruction .fi-text span { color: #aa0000 !important; }
+    .footer { color: #888 !important; border-top-color: #ccc !important; }
+    .corner { border-color: #aa0000 !important; }
+    .header::after { background: linear-gradient(90deg, transparent, #aa0000, transparent) !important; }
+    .letter::after { background: linear-gradient(90deg, transparent, #aa0000, transparent) !important; }
+  }
+
+  /* Print button */
+  .print-btn {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: #cc0000;
+    color: #000;
+    border: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 12px 22px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    z-index: 100;
+  }
+  .print-btn:hover { background: #ff2222; }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">▶ PRINT A5</button>
+
+<div class="letter">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <div class="moon-bg"></div>
+  <div class="stamp">CLASSIFIED</div>
+
+  <div class="header">
+    <span class="org-label">Directorate of Extraterrestrial Ambitions // București Station</span>
+    <div class="op-title">OPERATION <span>MOON</span> LANDING</div>
+    <div class="op-sub">Programul Spațial Român // Feltordre 01</div>
+  </div>
+
+  <div class="meta">
+    <span>Til: Kosmonaut-gruppe (felt)</span>
+    <span>Protokoll: PRUNARIU-81</span>
+    <span>Fase 00 // Pre-oppskytning</span>
+  </div>
+
+  <span class="section-label">// Situasjonsrapport</span>
+  <div class="body-text">
+    Kandidater. Dere befinner dere nå i <span class="highlight">D.E.A. Forward Operating Base București</span> — et av det hemmelige romprogrammets viktigste logistikknutepunkter i Øst-Europa.
+    <br><br>
+    Foran dere er utplassert <span class="highlight">standardutstyr for kjemisk kalibrering</span> av astronautkroppen. Romfart er en ekstrem disiplin. Kroppen må forberedes.
+  </div>
+
+  <div class="divider"><span>Utplassert utstyr</span></div>
+
+  <div class="inventory">
+    <div class="inventory-row">
+      <div class="inv-icon">🛢️</div>
+      <div class="inv-body">
+        <span class="inv-name">ORBITAL PRESSURE VESSEL</span>
+        <span class="inv-desc">2,5L lokal stabiliseringsvæske // Ciucaș-klasse<br>Beholderen må tømmes før feltoperasjonen kan igangsettes</span>
+      </div>
+      <div class="inv-qty">1<span>stk / lag</span></div>
+    </div>
+    <div class="inventory-row">
+      <div class="inv-icon">⚗️</div>
+      <div class="inv-body">
+        <span class="inv-name">AKSELERASJONSDOSER</span>
+        <span class="inv-desc">Forhåndsmålte enkeltdoser // Høy konsentrasjon<br>Utstedt av Mission Control</span>
+      </div>
+      <div class="inv-qty">1<span>stk / person</span></div>
+    </div>
+  </div>
+
+  <div class="divider"><span>Operasjonsordre</span></div>
+
+  <div class="order-box">
+    <span class="order-label">// Direktiv 00-A // Kjemisk kalibrering</span>
+    <div class="order-text">
+      Utstyret er utstedt av Mission Control for å optimalisere kosmonautenes <span class="highlight">fysiologiske beredskap</span> før feltoperasjonen igangsettes. Beholderne skal tømmes etter anerkjente prosedyrer og i henhold til lagets egne medisinske vurderinger.
+      <br><br>
+      Det er ingen tidsbegrensning på gjennomføring av dette direktivet, men feltoperasjonen kan ikke påbegynnes før beholderne er klarert av Flight Director.
+    </div>
+  </div>
+
+  <div class="final-instruction">
+    <span class="fi-eyebrow">// Avsluttende prosedyre</span>
+    <div class="fi-text">
+      Presenter <span>tomme beholdere</span> til Flight Director<br>for mottak av videre instruksjoner.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Dok-ID: ORBIT-KONV-01</span>
+    <span>Mission Control // Überwacht</span>
+    <span>Clearance: LVL 1</span>
+  </div>
+</div>
+
+</body>
+</html>
