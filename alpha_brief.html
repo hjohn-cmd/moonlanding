@@ -229,12 +229,12 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
   <div class="sb-row">
     <span class="sb-team-name" style="color:#4a9eff;">ALPHA</span>
     <div class="sb-bar-wrap"><div class="sb-bar" id="sb-alpha-bar" style="background:#4a9eff;"></div></div>
-    <span class="sb-score" id="sb-alpha-count" style="color:#4a9eff;">-/6</span>
+    <span class="sb-score" id="sb-alpha-count" style="color:#4a9eff;">-/4</span>
   </div>
   <div class="sb-row">
     <span class="sb-team-name" style="color:#ff9a3c;">BRAVO</span>
     <div class="sb-bar-wrap"><div class="sb-bar" id="sb-bravo-bar" style="background:#ff9a3c;"></div></div>
-    <span class="sb-score" id="sb-bravo-count" style="color:#ff9a3c;">-/6</span>
+    <span class="sb-score" id="sb-bravo-count" style="color:#ff9a3c;">-/4</span>
   </div>
   <div class="sb-ping" id="sb-ping">...</div>
 </div>
@@ -692,10 +692,10 @@ async function sbUpdate(){
 function sbRender(data){
   if(!data)return;
   var a=(data.alpha||[]).length,b=(data.bravo||[]).length;
-  document.getElementById('sb-alpha-bar').style.width=(a/6*100)+'%';
-  document.getElementById('sb-alpha-count').textContent=a+'/6';
-  document.getElementById('sb-bravo-bar').style.width=(b/6*100)+'%';
-  document.getElementById('sb-bravo-count').textContent=b+'/6';
+  document.getElementById('sb-alpha-bar').style.width=(Math.min(a,4)/4*100)+'%';
+  document.getElementById('sb-alpha-count').textContent=a+'/4';
+  document.getElementById('sb-bravo-bar').style.width=(Math.min(b,4)/4*100)+'%';
+  document.getElementById('sb-bravo-count').textContent=b+'/4';
   var now=new Date();
   document.getElementById('sb-ping').textContent=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2)+':'+('0'+now.getSeconds()).slice(-2);}
 async function sbPoll(){var d=await sbFetch();sbRender(d);}
