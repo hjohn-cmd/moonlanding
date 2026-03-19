@@ -213,9 +213,31 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 .deadline-desc strong{color:var(--text);}
 .deadline-expired-msg{display:none;font-family:'Orbitron',monospace;font-size:11px;color:#555;letter-spacing:2px;margin-top:8px;}
 @media(max-width:600px){.auth-input-group,.comms-input-wrap{flex-direction:column;}#status-bar .sbar-item:nth-child(2){display:none;}.footer-inner{flex-direction:column;text-align:center;}}
+#scoreboard-widget{position:fixed;bottom:60px;right:16px;z-index:20;background:rgba(2,3,4,0.95);border:1px solid var(--red-dim);padding:12px 14px;width:190px;font-family:'Orbitron',monospace;box-shadow:0 0 20px rgba(0,0,0,0.8);}
+.sb-header{font-size:9px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:10px;border-bottom:1px solid #1a0000;padding-bottom:6px;}
+.sb-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.sb-team-name{font-size:9px;letter-spacing:2px;width:44px;flex-shrink:0;}
+.sb-bar-wrap{flex:1;height:4px;background:#111;overflow:hidden;}
+.sb-bar{height:100%;width:0%;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
+.sb-score{font-size:10px;width:22px;text-align:right;flex-shrink:0;}
+.sb-ping{font-size:8px;letter-spacing:1px;color:#333;margin-top:8px;text-align:right;}
 </style>
 </head>
 <body>
+<div id="scoreboard-widget">
+  <div class="sb-header">// MISSION SCOREBOARD</div>
+  <div class="sb-row">
+    <span class="sb-team-name" style="color:#4a9eff;">ALPHA</span>
+    <div class="sb-bar-wrap"><div class="sb-bar" id="sb-alpha-bar" style="background:#4a9eff;"></div></div>
+    <span class="sb-score" id="sb-alpha-count" style="color:#4a9eff;">-/4</span>
+  </div>
+  <div class="sb-row">
+    <span class="sb-team-name" style="color:#ff9a3c;">BRAVO</span>
+    <div class="sb-bar-wrap"><div class="sb-bar" id="sb-bravo-bar" style="background:#ff9a3c;"></div></div>
+    <span class="sb-score" id="sb-bravo-count" style="color:#ff9a3c;">-/4</span>
+  </div>
+  <div class="sb-ping" id="sb-ping">...</div>
+</div>
 <canvas id="bg-canvas"></canvas>
 <div class="vignette"></div>
 <div class="stamp-bg">CLASSIFIED</div>
@@ -621,6 +643,7 @@ function handleCheckbox(cb,lblId,infoId,taskNum){
   }
   checkedCount=completedTasks.size;
   updateProgress();
+  sbUpdate();
   if(checkedCount>=4&&!commsShown){
     commsShown=true;
     setTimeout(sndComms,300);
@@ -654,6 +677,29 @@ document.addEventListener('DOMContentLoaded',function(){
   var li=document.getElementById('laika-input');
   if(li)li.addEventListener('keypress',function(e){if(e.key==='Enter')verifyLaika();});
 });
+
+// ── SCOREBOARD ────────────────────────────────────────────────
+var SB_BIN='69bbaf63aa77b81da9facb74',SB_KEY='$2a$10$waiHsAy4JBoQrL3XVPq7heSray8bHcH/61dUhudWfJXE6kyHZ7qvq',SB_TEAM='alpha';
+async function sbFetch(){
+  try{var r=await fetch('https://api.jsonbin.io/v3/b/'+SB_BIN+'/latest',{headers:{'X-Master-Key':SB_KEY}});
+  if(!r.ok)return null;var d=await r.json();return d.record;}catch(e){return null;}}
+async function sbUpdate(){
+  var cur=await sbFetch();
+  if(!cur)cur={alpha:[],bravo:[]};
+  cur[SB_TEAM]=Array.from(completedTasks);
+  try{await fetch('https://api.jsonbin.io/v3/b/'+SB_BIN,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':SB_KEY},body:JSON.stringify(cur)});}catch(e){}
+  sbRender(cur);}
+function sbRender(data){
+  if(!data)return;
+  var a=(data.alpha||[]).length,b=(data.bravo||[]).length;
+  document.getElementById('sb-alpha-bar').style.width=(Math.min(a,4)/4*100)+'%';
+  document.getElementById('sb-alpha-count').textContent=a+'/4';
+  document.getElementById('sb-bravo-bar').style.width=(Math.min(b,4)/4*100)+'%';
+  document.getElementById('sb-bravo-count').textContent=b+'/4';
+  var now=new Date();
+  document.getElementById('sb-ping').textContent=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2)+':'+('0'+now.getSeconds()).slice(-2);}
+async function sbPoll(){var d=await sbFetch();sbRender(d);}
+sbPoll();setInterval(sbPoll,30000);
 
 // ── UNLOCK ANIMATION ──────────────────────────────────────────
 async function runUnlockAnimation(){
