@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVERSIKT // OP-MOON-LANDING</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --green: #00ff41;
+            --dim: #008f11;
+            --red: #ff003c;
+            --panel: #111;
+            --border: #333;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--green);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px dashed var(--dim);
+            padding-bottom: 12px;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            color: var(--dim);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 30px 0 10px 0;
+            border-left: 3px solid var(--dim);
+            padding-left: 8px;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .file-list li {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--dim);
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        .file-list li:hover {
+            border-left-color: var(--green);
+            background: #161616;
+        }
+        .file-list a {
+            color: var(--green);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .file-list a:hover {
+            text-decoration: underline;
+        }
+        .desc {
+            color: #aaa;
+            font-size: 0.8rem;
+            text-align: right;
+        }
+        .badge {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 2px;
+            border: 1px solid var(--dim);
+            color: var(--dim);
+            white-space: nowrap;
+        }
+        .badge.old {
+            border-color: #555;
+            color: #555;
+        }
+        .badge.test {
+            border-color: var(--red);
+            color: var(--red);
+        }
+        .badge.active {
+            border-color: var(--green);
+            color: var(--green);
+        }
+    </style>
+</head>
+<body>
+    <h1>Filoversikt // Op-Moon-Landing</h1>
+
+    <div class="section-title">Inngangspunkter</div>
+    <ul class="file-list">
+        <li>
+            <a href="index.html">index.html</a>
+            <span class="desc">Mission Control login-side <span class="badge active">AKTIV</span></span>
+        </li>
+        <li>
+            <a href="SMS.html">SMS.html</a>
+            <span class="desc">Full kommunikasjonsdashboard – meldingsoversikt <span class="badge active">AKTIV</span></span>
+        </li>
+    </ul>
+
+    <div class="section-title">Alpha-lag brief</div>
+    <ul class="file-list">
+        <li>
+            <a href="alpha_brief.html">alpha_brief.html</a>
+            <span class="desc">Klassifisert brief for lag Alpha – nyeste versjon <span class="badge active">AKTIV</span></span>
+        </li>
+        <li>
+            <a href="alpha_brief_beta.html">alpha_brief_beta.html</a>
+            <span class="desc">Betaversjon av Alpha-brief <span class="badge old">GAMMEL</span></span>
+        </li>
+        <li>
+            <a href="alpha_brief_old.html">alpha_brief_old.html</a>
+            <span class="desc">Eldre versjon av Alpha-brief <span class="badge old">GAMMEL</span></span>
+        </li>
+        <li>
+            <a href="alpha_briefolold.html">alpha_briefolold.html</a>
+            <span class="desc">Enda eldre versjon av Alpha-brief <span class="badge old">GAMMEL</span></span>
+        </li>
+    </ul>
+
+    <div class="section-title">Bravo-lag brief</div>
+    <ul class="file-list">
+        <li>
+            <a href="bravo_brief.html">bravo_brief.html</a>
+            <span class="desc">Klassifisert brief for lag Bravo – nyeste versjon <span class="badge active">AKTIV</span></span>
+        </li>
+        <li>
+            <a href="bravo_brief_beta.html">bravo_brief_beta.html</a>
+            <span class="desc">Betaversjon av Bravo-brief <span class="badge old">GAMMEL</span></span>
+        </li>
+        <li>
+            <a href="bravo_brief_old.html">bravo_brief_old.html</a>
+            <span class="desc">Eldre versjon av Bravo-brief <span class="badge old">GAMMEL</span></span>
+        </li>
+        <li>
+            <a href="bravo_briefoldoldol.html">bravo_briefoldoldol.html</a>
+            <span class="desc">Enda eldre versjon av Bravo-brief <span class="badge old">GAMMEL</span></span>
+        </li>
+    </ul>
+
+    <div class="section-title">Konvolutter</div>
+    <ul class="file-list">
+        <li>
+            <a href="konvolutt-alpha-aktivering.html">konvolutt-alpha-aktivering.html</a>
+            <span class="desc">Aktiveringskonvolutt for lag Alpha <span class="badge active">AKTIV</span></span>
+        </li>
+        <li>
+            <a href="konvolutt-bravo-aktivering.html">konvolutt-bravo-aktivering.html</a>
+            <span class="desc">Aktiveringskonvolutt for lag Bravo <span class="badge active">AKTIV</span></span>
+        </li>
+        <li>
+            <a href="konvolutt-prunariu-61.html">konvolutt-prunariu-61.html</a>
+            <span class="desc">Konvolutt for operasjon Prunariu-61 <span class="badge active">AKTIV</span></span>
+        </li>
+    </ul>
+
+    <div class="section-title">Feltordre</div>
+    <ul class="file-list">
+        <li>
+            <a href="feltordre-01-oppstart.html">feltordre-01-oppstart.html</a>
+            <span class="desc">Feltordre 01 – Kjemisk kalibrering / oppstart <span class="badge active">AKTIV</span></span>
+        </li>
+    </ul>
+
+    <div class="section-title">Testfiler</div>
+    <ul class="file-list">
+        <li>
+            <a href="test.html">test.html</a>
+            <span class="desc">Kopi av Bravo-brief brukt til testing <span class="badge test">TEST</span></span>
+        </li>
+        <li>
+            <a href="test2.html">test2.html</a>
+            <span class="desc">Enkel testside for Netlify-deploy <span class="badge test">TEST</span></span>
+        </li>
+    </ul>
+</body>
+</html>
