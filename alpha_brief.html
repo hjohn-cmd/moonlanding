@@ -6,7 +6,7 @@
 <title>⬛ CLASSIFIED // OP-MOON-LANDING // ALPHA</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Orbitron:wght@400;700;900&display=swap');
-:root{--red:#cc0000;--red-dim:#7a0000;--red-glow:rgba(204,0,0,0.4);--green:#00ff41;--green-dim:#00aa2a;--green-glow:rgba(0,255,65,0.3);--bg:#020304;--bg2:#050810;--text:#e8e8d4;--text-dim:#8a8a7a;--gold:#c9a84c;--team-color:#4a9eff;}
+:root{--red:#cc0000;--red-dim:#7a0000;--red-glow:rgba(204,0,0,0.4);--green:#00ff41;--green-dim:#00aa2a;--green-glow:rgba(0,255,65,0.3);--bg:#020304;--bg2:#050810;--text:#e8e8d4;--text-dim:#b8b8a8;--gold:#c9a84c;--team-color:#4a9eff;}
 *{box-sizing:border-box;margin:0;padding:0;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--red-dim);}
 body{background:var(--bg);font-family:'Share Tech Mono',monospace;color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;cursor:crosshair;padding-bottom:80px;}
@@ -74,7 +74,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 .decrypt-box::after{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 28px 28px 0;border-color:transparent var(--red-dim) transparent transparent;opacity:0.6;}
 .decrypt-box .scanbeam{position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,65,0.03),transparent);animation:scanbeam 4s linear infinite;pointer-events:none;}
 @keyframes scanbeam{to{left:200%;}}
-.decrypt-text{font-size:13px;line-height:2;color:var(--text-dim);letter-spacing:0.5px;position:relative;}
+.decrypt-text{font-size:15px;line-height:2;color:var(--text);letter-spacing:0.5px;position:relative;}
 .decrypt-text .reveal{color:var(--text);}
 .decrypt-text .highlight{color:var(--green);}
 .decrypt-text .codename{color:var(--red);font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;}
@@ -104,7 +104,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 .coord-tag{font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:4px;font-family:'Orbitron',monospace;}
 .coord-value{font-size:18px;color:var(--green);letter-spacing:2px;margin-bottom:6px;font-family:'Orbitron',monospace;text-shadow:0 0 12px var(--green-glow);}
 .coord-dest{font-size:14px;color:var(--team-color);letter-spacing:0.5px;margin-bottom:14px;font-weight:bold;}
-.coord-note{font-size:13px;color:var(--text-dim);line-height:1.8;border-top:1px solid #111;padding-top:12px;}
+.coord-note{font-size:15px;color:var(--text-dim);line-height:2;border-top:1px solid #111;padding-top:12px;}
 .highlight-text{color:var(--text);font-weight:bold;}
 .auth-module{margin-top:18px;border-top:1px solid #1a1a1a;padding-top:16px;display:flex;flex-direction:column;gap:10px;position:relative;}
 .auth-module::before{content:'TILGANGSKONTROLL';position:absolute;top:-10px;left:12px;background:#040608;padding:0 8px;font-size:11px;letter-spacing:3px;color:var(--red-dim);font-family:'Orbitron',monospace;}
@@ -132,7 +132,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 .mission-task.task-done{border-left-color:#0a3a18;opacity:0.8;}
 .task-number{position:absolute;top:12px;right:14px;font-family:'Orbitron',monospace;font-size:22px;color:rgba(0,255,65,0.06);font-weight:900;letter-spacing:-1px;line-height:1;user-select:none;}
 .mission-task h3{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--green);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase;line-height:1.2;}
-.mission-task p{font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:10px;}
+.mission-task p{font-size:14px;color:var(--text-dim);line-height:1.8;margin-bottom:10px;}
 .mission-task .req{font-size:12px;color:var(--gold);font-weight:bold;line-height:1.7;border-left:2px solid var(--gold);padding-left:10px;}
 .task-complete{margin-top:16px;padding-top:12px;border-top:1px solid #111;}
 .checkbox-label{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;width:fit-content;}
@@ -148,7 +148,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 .infoboks::before{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 16px 16px 0;border-color:transparent #0a2016 transparent transparent;}
 .info-label{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;color:var(--green-dim);margin-bottom:12px;display:flex;align-items:center;gap:10px;text-transform:uppercase;}
 .info-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#0d2a1a,transparent);}
-.info-content{font-size:13px;color:#9aba9a;line-height:1.9;letter-spacing:0.3px;}
+.info-content{font-size:14px;color:#c0d8c0;line-height:1.9;letter-spacing:0.3px;}
 @keyframes infoReveal{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
 #mc-comms{display:none;margin-top:24px;border:1px solid var(--red);background:linear-gradient(135deg,#080000,#0a0000);padding:0;position:relative;animation:commsReveal 0.8s ease forwards;overflow:hidden;}
 #mc-comms::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--red),var(--red-dim),transparent);animation:scanlineMove 1.5s linear infinite;}
@@ -179,7 +179,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 .mission-task-final::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green-dim),transparent);animation:borderPulse 3s ease-in-out infinite;}
 .mission-task-final::after{content:'EXTRACT';position:absolute;top:12px;right:16px;font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:4px;color:rgba(0,255,65,0.04);user-select:none;}
 .mission-task-final h3{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--red);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase;text-shadow:0 0 10px var(--red-glow);}
-.mission-task-final p{font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:10px;}
+.mission-task-final p{font-size:14px;color:var(--text-dim);line-height:1.8;margin-bottom:10px;}
 .mission-task-final .req{font-size:12px;color:var(--gold);font-weight:bold;border-left:2px solid var(--gold);padding-left:10px;line-height:1.7;}
 .infoboks-final{margin-top:16px;background:rgba(204,0,0,0.04);border:1px solid #1a0000;border-left:3px solid var(--red);padding:16px 18px;}
 .infoboks-final .info-label{color:var(--red);}
@@ -209,7 +209,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 .deadline-text{flex:1;min-width:200px;}
 .deadline-heading{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--text);margin-bottom:4px;}
 .deadline-heading span{color:var(--red);}
-.deadline-desc{font-size:12px;color:var(--text-dim);line-height:1.7;letter-spacing:0.5px;}
+.deadline-desc{font-size:13px;color:var(--text-dim);line-height:1.8;letter-spacing:0.5px;}
 .deadline-desc strong{color:var(--text);}
 .deadline-expired-msg{display:none;font-family:'Orbitron',monospace;font-size:11px;color:#555;letter-spacing:2px;margin-top:8px;}
 @media(max-width:600px){.auth-input-group,.comms-input-wrap{flex-direction:column;}#status-bar .sbar-item:nth-child(2){display:none;}.footer-inner{flex-direction:column;text-align:center;}}
@@ -327,7 +327,8 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
       <div class="coord-dest">📍 Piața Revoluției — Memorial of Rebirth</div>
       <div class="coord-note">
         Dette er ikke et monument, det er en analog parabolantenne. Den mangler strøm. For å aktivere den, kreves organisk ledningsevne. Laget må bruke sine egne kropper til å forme <span class="highlight-text">"Poteten/Obelisken"</span> for å slutte kretsen og låse signalet mot verdensrommet.<br><br>
-        <span style="color:var(--gold);font-weight:bold;">⚠ KRAV: Form kropper som monumentet foran antennen. Ta bilde av hele laget i posisjon. Last opp bildet i Telegram til Mission Control. Etter opplasting av dokumentasjon, fortsett med "Prunariu-protokollen".</span>
+        <span style="color:var(--gold);font-weight:bold;">⚠ KRAV: Form kropper som monumentet foran antennen. Ta bilde av hele laget i posisjon. Last opp bildet i Telegram til Mission Control.</span><br><br>
+        <span style="color:var(--green);font-weight:bold;">▶ Gå videre til neste steg <em>umiddelbart</em> etter at bildet er sendt — dere trenger ikke vente på svar fra Mission Control.</span>
       </div>
     </div>
     <div class="phase" id="transit-zone">
@@ -357,10 +358,10 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
         For å bevise at dere kan opprettholde <span class="highlight-text">"Deep Cover"</span> under ubehagelige forhold, krever Mission Control at dere leverer den verbale krypteringsnøkkelen med iskald, dødsens seriøs overbevisning.<br><br>
         Gå til baren, se Ingeniøren dypt i øynene (uten å trekke på smilebåndet), og initier følgende utveksling:<br><br>
         1. En av dere sier: <span class="highlight-text">"Sunt o prințesă dulce"</span><br>
-        <span style="font-size:13px;color:#666;padding-left:16px;">↳ uttales: <em>sunt o prin-tse-suh dul-che</em></span><br><br>
-        2. Ingeniøren spør: "Ce cauți?" <span style="font-size:13px;color:#666;"><em>(che kow-tsee?)</em></span><br><br>
+        <span style="font-size:14px;color:#999;padding-left:16px;">↳ uttales: <em>sunt o prin-tse-suh dul-che</em></span><br><br>
+        2. Ingeniøren spør: "Ce cauți?" <span style="font-size:14px;color:#999;"><em>(che kow-tsee?)</em></span><br><br>
         3. Dere svarer i kor <em style="color:var(--text-dim);">(jeg anbefaler å øve først)</em>: <span class="highlight-text">"Căutăm demnitate"</span><br>
-        <span style="font-size:13px;color:#666;padding-left:16px;">↳ uttales: <em>kuh-oo-tuhm dem-ni-tah-te</em></span><br><br>
+        <span style="font-size:14px;color:#999;padding-left:16px;">↳ uttales: <em>kuh-oo-tuhm dem-ni-tah-te</em></span><br><br>
         Enhver antydning til latter eller nøling betyr at coveret deres er blåst. Ved vellykket utveksling vil Ingeniøren oppgi den krypterte koden for å låse opp resten av systemet, samt livsviktig kjemisk stabiliseringsvæske.<br><br>
         <span style="color:var(--gold);font-weight:bold;">⚠ KRAV: Hele utvekslingen skal filmes og lastes opp til Mission Control via Telegram. Skriv deretter inn koden dere mottar.</span>
       </div>
