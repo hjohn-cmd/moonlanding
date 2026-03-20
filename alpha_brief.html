@@ -229,12 +229,12 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
   <div class="sb-row">
     <span class="sb-team-name" style="color:#4a9eff;">ALPHA</span>
     <div class="sb-bar-wrap"><div class="sb-bar" id="sb-alpha-bar" style="background:#4a9eff;"></div></div>
-    <span class="sb-score" id="sb-alpha-count" style="color:#4a9eff;">-/5</span>
+    <span class="sb-score" id="sb-alpha-count" style="color:#4a9eff;">-/6</span>
   </div>
   <div class="sb-row">
     <span class="sb-team-name" style="color:#ff9a3c;">BRAVO</span>
     <div class="sb-bar-wrap"><div class="sb-bar" id="sb-bravo-bar" style="background:#ff9a3c;"></div></div>
-    <span class="sb-score" id="sb-bravo-count" style="color:#ff9a3c;">-/5</span>
+    <span class="sb-score" id="sb-bravo-count" style="color:#ff9a3c;">-/6</span>
   </div>
   <div class="sb-ping" id="sb-ping">...</div>
 </div>
@@ -350,7 +350,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
     </div>
     <div class="phase" id="phase-2-box" style="display:none;">
       <div class="phase-eyebrow">Fase 02 // Låst</div>
-      <div class="phase-label">PRUNARIU-PROTOKOLLEN <span class="phase-status" id="fase2-status">[LÅST]</span></div>
+      <div class="phase-label">PRUNARIU-PROTOKOLLEN <span style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;"><span class="phase-status" id="fase2-status">[LÅST]</span><span onclick="resetPhaseScores()" style="font-size:9px;color:var(--red-dim);letter-spacing:2px;cursor:pointer;font-family:'Orbitron',monospace;border:1px solid #2a0000;padding:2px 6px;opacity:0.6;" title="Nullstill fase-poeng i scoreboard">↺ RESET</span></span></div>
       <div class="coord-tag">Lokasjon // Gjenlevende Bakkemannskap</div>
       <div class="coord-dest" style="color:#ff3366;">📍 Fire Club (Strada Gabroveni 12 / Covaci 7)</div>
       <div class="coord-note">
@@ -612,6 +612,7 @@ function verifyPhase2Code(){
     f.style.borderColor='var(--green)';f.style.color='var(--green)';f.disabled=true;
     btn.style.background='var(--green)';btn.style.color='#000';btn.textContent='ÅPENT';btn.disabled=true;
     pb.classList.add('completed');fs.textContent='[FULLFØRT]';fs.classList.add('ok');
+    phase2Done=true;sbUpdate();
     setTimeout(function(){
       s.textContent='// FLIGHT MANUAL DEKRYPTERT';
       tc.style.display='flex';tc.style.animation='decryptReveal 0.8s forwards';
@@ -731,7 +732,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 // ── SCOREBOARD ────────────────────────────────────────────────
 var SB_BIN='69bbaf63aa77b81da9facb74',SB_KEY='$2a$10$waiHsAy4JBoQrL3XVPq7heSray8bHcH/61dUhudWfJXE6kyHZ7qvq',SB_TEAM='alpha';
-var phase1Done=false;
+var phase1Done=false,phase2Done=false;
 async function sbFetch(){
   try{var r=await fetch('https://api.jsonbin.io/v3/b/'+SB_BIN+'/latest',{headers:{'X-Master-Key':SB_KEY}});
   if(!r.ok)return null;var d=await r.json();return d.record;}catch(e){return null;}}
@@ -740,16 +741,24 @@ async function sbUpdate(){
   if(!cur)cur={alpha:[],bravo:[]};
   var arr=Array.from(completedTasks);
   if(phase1Done)arr=[0].concat(arr);
+  if(phase2Done)arr=[-1].concat(arr);
   cur[SB_TEAM]=arr;
+  try{await fetch('https://api.jsonbin.io/v3/b/'+SB_BIN,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':SB_KEY},body:JSON.stringify(cur)});}catch(e){}
+  sbRender(cur);}
+async function resetPhaseScores(){
+  phase1Done=false;phase2Done=false;
+  var cur=await sbFetch();
+  if(!cur)cur={alpha:[],bravo:[]};
+  cur[SB_TEAM]=(cur[SB_TEAM]||[]).filter(function(x){return x!==0&&x!==-1;});
   try{await fetch('https://api.jsonbin.io/v3/b/'+SB_BIN,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':SB_KEY},body:JSON.stringify(cur)});}catch(e){}
   sbRender(cur);}
 function sbRender(data){
   if(!data)return;
   var a=(data.alpha||[]).length,b=(data.bravo||[]).length;
-  document.getElementById('sb-alpha-bar').style.width=(Math.min(a,5)/5*100)+'%';
-  document.getElementById('sb-alpha-count').textContent=a+'/5';
-  document.getElementById('sb-bravo-bar').style.width=(Math.min(b,5)/5*100)+'%';
-  document.getElementById('sb-bravo-count').textContent=b+'/5';
+  document.getElementById('sb-alpha-bar').style.width=(Math.min(a,6)/6*100)+'%';
+  document.getElementById('sb-alpha-count').textContent=a+'/6';
+  document.getElementById('sb-bravo-bar').style.width=(Math.min(b,6)/6*100)+'%';
+  document.getElementById('sb-bravo-count').textContent=b+'/6';
   var now=new Date();
   document.getElementById('sb-ping').textContent=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2)+':'+('0'+now.getSeconds()).slice(-2);}
 async function sbPoll(){var d=await sbFetch();sbRender(d);}
