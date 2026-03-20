@@ -212,8 +212,9 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 .deadline-desc{font-size:13px;color:var(--text-dim);line-height:1.8;letter-spacing:0.5px;}
 .deadline-desc strong{color:var(--text);}
 .deadline-expired-msg{display:none;font-family:'Orbitron',monospace;font-size:11px;color:#555;letter-spacing:2px;margin-top:8px;}
-@media(max-width:600px){.auth-input-group,.comms-input-wrap{flex-direction:column;}#status-bar .sbar-item:nth-child(2){display:none;}.footer-inner{flex-direction:column;text-align:center;}}
+@media(max-width:600px){.auth-input-group,.comms-input-wrap{flex-direction:column;}#status-bar .sbar-item:nth-child(2){display:none;}.footer-inner{flex-direction:column;text-align:center;}#scoreboard-widget{bottom:0;right:0;left:0;width:100%;border-radius:0;border-left:none;border-right:none;border-bottom:none;padding:0;box-sizing:border-box;}.sb-mini-row{display:flex!important;}#scoreboard-widget .sb-header,#scoreboard-widget .sb-row,#scoreboard-widget .sb-ping{display:none;}#scoreboard-widget.sb-expanded .sb-header{display:block;}#scoreboard-widget.sb-expanded .sb-row{display:flex;}#scoreboard-widget.sb-expanded .sb-ping{display:block;}#scoreboard-widget.sb-expanded{padding:10px 14px 0;}}
 #scoreboard-widget{position:fixed;bottom:60px;right:16px;z-index:20;background:rgba(2,3,4,0.95);border:1px solid var(--red-dim);padding:12px 14px;width:190px;font-family:'Orbitron',monospace;box-shadow:0 0 20px rgba(0,0,0,0.8);}
+.sb-mini-row{display:none;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;border-top:1px solid var(--red-dim);}
 .sb-header{font-size:9px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:10px;border-bottom:1px solid #1a0000;padding-bottom:6px;}
 .sb-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .sb-team-name{font-size:9px;letter-spacing:2px;width:44px;flex-shrink:0;}
@@ -225,6 +226,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 </head>
 <body>
 <div id="scoreboard-widget">
+  <div class="sb-mini-row" onclick="sbToggle()"><span style="color:var(--red);">◈</span><span style="color:#4a9eff;font-size:9px;letter-spacing:2px;">ALPHA <span id="sb-mini-alpha">-/6</span></span><span style="color:#333;">·</span><span style="color:#ff9a3c;font-size:9px;letter-spacing:2px;">BRAVO <span id="sb-mini-bravo">-/6</span></span><span id="sb-toggle-icon" style="margin-left:auto;color:var(--red-dim);">▲</span></div>
   <div class="sb-header">// MISSION SCOREBOARD</div>
   <div class="sb-row">
     <span class="sb-team-name" style="color:#4a9eff;">ALPHA</span>
@@ -745,6 +747,10 @@ async function sbUpdate(){
   cur[SB_TEAM]=arr;
   try{await fetch('https://api.jsonbin.io/v3/b/'+SB_BIN,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':SB_KEY},body:JSON.stringify(cur)});}catch(e){}
   sbRender(cur);}
+function sbToggle(){
+  var w=document.getElementById('scoreboard-widget');
+  var i=document.getElementById('sb-toggle-icon');
+  if(w.classList.toggle('sb-expanded')){i.textContent='▼';}else{i.textContent='▲';}}
 async function resetPhaseScores(){
   phase1Done=false;phase2Done=false;
   var cur=await sbFetch();
@@ -759,6 +765,8 @@ function sbRender(data){
   document.getElementById('sb-alpha-count').textContent=a+'/6';
   document.getElementById('sb-bravo-bar').style.width=(Math.min(b,6)/6*100)+'%';
   document.getElementById('sb-bravo-count').textContent=b+'/6';
+  var ma=document.getElementById('sb-mini-alpha'),mb=document.getElementById('sb-mini-bravo');
+  if(ma)ma.textContent=a+'/6';if(mb)mb.textContent=b+'/6';
   var now=new Date();
   document.getElementById('sb-ping').textContent=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2)+':'+('0'+now.getSeconds()).slice(-2);}
 async function sbPoll(){var d=await sbFetch();sbRender(d);}
