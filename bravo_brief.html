@@ -330,7 +330,24 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
         <span style="color:var(--gold);font-weight:bold;">⚠ KRAV: Form kropper som et kors foran antennen. Ta bilde av hele laget i posisjon. Last opp bildet i Telegram til Mission Control. Etter opplasting av dokumentasjon, fortsett med "Prunariu-protokollen".</span>
       </div>
     </div>
-    <div class="phase" id="phase-2-box">
+    <div class="phase" id="transit-zone">
+      <div class="phase-eyebrow">Bevegelsesordre // Transit-Sone</div>
+      <div class="phase-label">📍 TRANSIT-SONE <span class="phase-status">[AKTIV]</span></div>
+      <div class="coord-note" style="border-top:none;padding-top:0;">
+        Biologisk masse er under vurdering av Direktoratet. Mens byråkratene stempler papirene, beordres troppen til å forflytte seg til den finansielle festningen: Romanias Nasjonalbank (Banca Națională a României) i Gamlebyen.<br><br>
+        Når dere står foran hovedinngangen med søylene, send bildebevis + meldingen <span class="highlight-text">"AWAITING CLEARANCE"</span> til Mission Control. Bli på posisjon inntil dekrypteringsnøkkelen for forsyningsdepotet er overlevert.<br><br>
+        <span style="color:var(--red-dim);font-size:12px;letter-spacing:1px;">ADVARSEL: Grunnet utdaterte sovjetiske kobberledninger kan autorisasjonskoden la vente på seg. Operasjonell paritet garanteres: Nøyaktig samme tidsforsinkelse pålegges den andre troppen.</span>
+      </div>
+      <div class="auth-module">
+        <div class="auth-status" id="clearance-status">// VENTER PÅ KLARERINGSKODE...</div>
+        <div class="auth-input-group">
+          <input type="text" id="clearance-code" placeholder="TAST INN CLEARANCE-KODE" autocomplete="off" spellcheck="false">
+          <button onclick="checkClearance()">VERIFISER KODE</button>
+        </div>
+        <div id="clearance-error" style="display:none;" class="auth-status">// FEIL KODE — BYRÅKRATIET AVVISER FORESPØRSELEN</div>
+      </div>
+    </div>
+    <div class="phase" id="phase-2-box" style="display:none;">
       <div class="phase-eyebrow">Fase 02 // Låst</div>
       <div class="phase-label">PRUNARIU-PROTOKOLLEN <span class="phase-status" id="fase2-status">[LÅST]</span></div>
       <div class="coord-tag">Lokasjon // Gjenlevende Bakkemannskap</div>
@@ -608,6 +625,38 @@ function verifyPhase2Code(){
   }
 }
 document.getElementById('override-code').addEventListener('keypress',function(e){if(e.key==='Enter')verifyPhase2Code();});
+
+// ── TRANSIT ZONE CLEARANCE ────────────────────────────────────
+function checkClearance(){
+  var input=document.getElementById('clearance-code').value.toUpperCase().trim(),
+      err=document.getElementById('clearance-error'),
+      status=document.getElementById('clearance-status');
+  if(input==='ORBITA-OK'){
+    sndAccessGranted();
+    err.style.display='none';
+    status.style.color='var(--green)';
+    status.textContent='// KLARERING GODKJENT — FORSYNINGSDEPOT ÅPNET';
+    document.getElementById('clearance-code').disabled=true;
+    document.getElementById('transit-zone').querySelector('button').disabled=true;
+    setTimeout(function(){
+      document.getElementById('transit-zone').style.display='none';
+      var p2=document.getElementById('phase-2-box');
+      p2.style.display='block';
+      p2.style.animation='decryptReveal 0.7s forwards';
+      setTimeout(function(){p2.scrollIntoView({behavior:'smooth',block:'start'});},80);
+    },1200);
+  }else{
+    sndError();
+    status.style.color='var(--red)';
+    err.style.display='block';
+    document.getElementById('clearance-code').value='';
+    err.classList.remove('flash-error');void err.offsetWidth;err.classList.add('flash-error');
+  }
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var cc=document.getElementById('clearance-code');
+  if(cc)cc.addEventListener('keypress',function(e){if(e.key==='Enter')checkClearance();});
+});
 
 // ── PROGRESS & CHECKBOXES ─────────────────────────────────────
 var checkedCount=0,commsShown=false;
