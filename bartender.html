@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bartender Instructions // The Urbanist</title>
+<title>Bartender Instructions // Cross Fire</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap');
 
@@ -20,38 +20,41 @@
     min-height: 297mm;
     background: #fff;
     margin: 0 auto 40px;
-    padding: 18mm 18mm 16mm;
-    position: relative;
+    padding: 18mm 20mm 18mm;
+    display: flex;
+    flex-direction: column;
     border: 1px solid #ddd;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   }
 
+  .page-content { flex: 1; }
+
   .top-bar {
-    border-left: 4px solid #cc0000;
-    padding-left: 12px;
+    border-left: 5px solid #cc0000;
+    padding-left: 14px;
     margin-bottom: 10mm;
   }
 
   .lang-tag {
-    font-size: 8pt;
+    font-size: 10pt;
     letter-spacing: 4px;
     color: #cc0000;
     text-transform: uppercase;
     display: block;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
   }
 
   h1 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 28pt;
+    font-size: 40pt;
     letter-spacing: 3px;
     color: #111;
     line-height: 1;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
   }
 
   .subtitle {
-    font-size: 8pt;
+    font-size: 10pt;
     letter-spacing: 2px;
     color: #888;
     text-transform: uppercase;
@@ -60,120 +63,119 @@
   .context-box {
     background: #f7f7f2;
     border: 1px solid #e0e0d8;
-    border-left: 3px solid #888;
-    padding: 8px 12px;
+    border-left: 4px solid #888;
+    padding: 12px 16px;
     margin-bottom: 8mm;
-    font-size: 9.5pt;
+    font-size: 11.5pt;
     color: #444;
-    line-height: 1.7;
+    line-height: 1.75;
   }
 
   .context-box strong { color: #111; }
 
   h2 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 14pt;
+    font-size: 18pt;
     letter-spacing: 3px;
     color: #cc0000;
-    margin-bottom: 3mm;
-    padding-bottom: 2px;
+    margin-bottom: 4mm;
+    padding-bottom: 3px;
     border-bottom: 1px solid #f0e0e0;
     text-transform: uppercase;
   }
 
   .step {
     display: flex;
-    gap: 10px;
-    margin-bottom: 5mm;
+    gap: 12px;
+    margin-bottom: 6mm;
     align-items: flex-start;
   }
 
   .step-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 22pt;
+    font-size: 32pt;
     color: #cc0000;
     line-height: 1;
     flex-shrink: 0;
-    width: 10mm;
+    width: 13mm;
   }
 
   .step-body {
     flex: 1;
-    font-size: 9.5pt;
+    font-size: 11.5pt;
     color: #333;
-    line-height: 1.75;
-    padding-top: 3px;
+    line-height: 1.8;
+    padding-top: 4px;
   }
 
   .step-body strong { color: #111; }
   .step-body em { color: #666; font-style: normal; }
 
-  /* Exchange box */
   .exchange {
     background: #fff8f0;
     border: 1px solid #e8d0b0;
-    border-left: 3px solid #cc6600;
-    padding: 8px 12px;
-    margin: 3mm 0;
-    font-size: 9.5pt;
-    line-height: 2;
+    border-left: 4px solid #cc6600;
+    padding: 10px 14px;
+    margin: 4mm 0;
+    font-size: 11.5pt;
+    line-height: 2.1;
     color: #333;
   }
 
   .exchange .line { display: block; }
-  .exchange .speaker { color: #cc6600; font-size: 8pt; letter-spacing: 1px; display: inline-block; width: 28mm; }
+  .exchange .speaker { color: #cc6600; font-size: 9.5pt; letter-spacing: 1px; display: inline-block; width: 32mm; }
   .exchange .words { color: #111; }
-  .exchange .phonetic { color: #999; font-size: 8pt; font-style: italic; display: block; padding-left: 30mm; margin-top: -4px; margin-bottom: 4px; }
+  .exchange .phonetic { color: #999; font-size: 9.5pt; font-style: italic; display: block; padding-left: 34mm; margin-top: -5px; margin-bottom: 5px; }
 
   .handout-box {
     background: #f0f7f0;
     border: 1px solid #b0d8b0;
-    border-left: 3px solid #006622;
-    padding: 8px 12px;
-    margin: 3mm 0;
-    font-size: 9.5pt;
+    border-left: 4px solid #006622;
+    padding: 12px 16px;
+    margin: 4mm 0;
+    font-size: 12pt;
     color: #333;
-    line-height: 1.7;
+    line-height: 1.9;
   }
 
   .handout-box strong { color: #006622; }
 
   .note {
-    font-size: 8.5pt;
+    font-size: 10.5pt;
     color: #666;
-    line-height: 1.7;
+    line-height: 1.75;
     font-style: italic;
-    margin-top: 2mm;
+    margin-top: 3mm;
   }
 
   .divider {
     border: none;
     border-top: 1px dashed #ddd;
-    margin: 6mm 0;
+    margin: 7mm 0;
   }
 
   .contact-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 8mm;
-    padding-top: 5mm;
+    margin-top: auto;
+    padding-top: 6mm;
     border-top: 1px solid #e0e0d8;
-    font-size: 8.5pt;
+    font-size: 11pt;
     color: #666;
   }
 
-  .contact-row strong { color: #111; display: block; font-size: 9pt; }
+  .contact-row strong { color: #111; display: block; font-size: 11.5pt; }
 
   .timing-pill {
     background: #cc0000;
     color: #fff;
-    font-size: 8pt;
+    font-size: 10pt;
     letter-spacing: 2px;
-    padding: 4px 10px;
+    padding: 6px 14px;
     text-transform: uppercase;
     display: inline-block;
-    margin-bottom: 6mm;
+    margin-bottom: 7mm;
   }
 
   @media print {
@@ -211,6 +213,7 @@
 <!-- ═══════════════════════════════════════ -->
 <div class="page">
 
+  <div class="page-content">
   <div class="top-bar">
     <span class="lang-tag">// English //</span>
     <h1>Instructions for the Engineer</h1>
@@ -275,10 +278,11 @@
 
   <hr class="divider">
 
-  <div class="note" style="color:#444; font-style:normal; font-size:9pt;">
+  <div class="note" style="color:#444; font-style:normal; font-size:11pt;">
     Two separate groups may come at different times. Each group gets their own envelope (I will have left two). The shots are prepaid for both groups.
   </div>
 
+  </div><!-- end page-content -->
   <div class="contact-row">
     <div>
       <strong>Questions? Contact me:</strong>
@@ -296,6 +300,7 @@
 <!-- ═══════════════════════════════════════ -->
 <div class="page">
 
+  <div class="page-content">
   <div class="top-bar">
     <span class="lang-tag">// Română //</span>
     <h1>Instrucțiuni pentru Inginer</h1>
@@ -357,10 +362,11 @@
 
   <hr class="divider">
 
-  <div class="note" style="color:#444; font-style:normal; font-size:9pt;">
+  <div class="note" style="color:#444; font-style:normal; font-size:11pt;">
     Două grupuri separate pot veni la momente diferite. Fiecare grup primește propriul plic (voi lăsa două). Shoturile sunt plătite în avans pentru ambele grupuri.
   </div>
 
+  </div><!-- end page-content -->
   <div class="contact-row">
     <div>
       <strong>Întrebări? Contactează-mă:</strong>
