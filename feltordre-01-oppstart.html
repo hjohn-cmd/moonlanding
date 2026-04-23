@@ -19,8 +19,8 @@
   }
 
   .letter {
-    width: 148mm;
-    min-height: 210mm;
+    width: 210mm;
+    min-height: 297mm;
     background: #0a0a08;
     color: #d8d8c4;
     padding: 14mm 13mm 18mm;
@@ -309,15 +309,15 @@
 
   /* PRINT STYLES */
   @media print {
-    @page { size: A5; margin: 0; }
+    @page { size: A4; margin: 0; }
     body { background: none; margin: 0; }
     .print-btn { display: none; }
     .moon-bg { display: none; }
     .letter::before { display: none; }
     .letter {
       border: none;
-      width: 148mm;
-      min-height: 210mm;
+      width: 210mm;
+      min-height: 297mm;
       page-break-after: always;
       background: #ffffff !important;
       color: #111 !important;
@@ -378,7 +378,7 @@
 </head>
 <body>
 
-<button class="print-btn" onclick="window.print()">▶ PRINT A5</button>
+<button class="print-btn" onclick="window.print()">▶ PRINT A4</button>
 
 <div class="letter">
   <div class="corner tl"></div>
