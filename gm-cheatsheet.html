@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GM Cheatsheet // OP-MOON-LANDING</title>
+<style>
+:root{--bg:#0a0a0a;--green:#00ff41;--dim:#008f11;--red:#ff003c;--gold:#ffcc00;--panel:#111;--border:#333;}
+*{box-sizing:border-box;}
+body{background:var(--bg);color:var(--green);font-family:'Courier New',monospace;margin:0;padding:20px;line-height:1.5;max-width:900px;margin:0 auto;}
+h1{text-align:center;border-bottom:2px dashed var(--dim);padding-bottom:12px;font-size:1.3rem;letter-spacing:3px;text-transform:uppercase;}
+h2{color:var(--gold);font-size:1rem;letter-spacing:2px;margin:30px 0 8px;border-left:4px solid var(--gold);padding-left:10px;text-transform:uppercase;}
+.panel{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--dim);padding:14px 18px;margin-bottom:12px;}
+.panel.red{border-left-color:var(--red);}
+.panel.gold{border-left-color:var(--gold);}
+table{width:100%;border-collapse:collapse;margin-bottom:10px;}
+td{padding:6px 8px;border-bottom:1px dotted #222;font-size:0.9rem;vertical-align:top;}
+td.label{color:#aaa;width:36%;}
+td.val{color:#fff;font-weight:bold;}
+.code{background:#000;color:var(--green);padding:2px 8px;border:1px solid var(--dim);font-family:inherit;letter-spacing:2px;font-weight:bold;}
+ol,ul{margin:6px 0 6px 20px;padding:0;}
+li{margin-bottom:4px;color:#ddd;font-size:0.9rem;}
+li strong{color:#fff;}
+.step{background:#0d0d0d;border-left:3px solid var(--dim);padding:10px 14px;margin-bottom:10px;}
+.step-num{color:var(--gold);font-weight:bold;letter-spacing:2px;font-size:0.85rem;}
+.step-title{color:#fff;font-weight:bold;margin:2px 0 6px;font-size:1rem;}
+.step-action{color:var(--green);font-size:0.88rem;margin:4px 0;}
+.step-note{color:#999;font-size:0.8rem;font-style:italic;margin-top:6px;}
+.kbd{background:#000;color:var(--gold);border:1px solid var(--gold);padding:1px 6px;font-size:0.85rem;letter-spacing:1px;}
+.warn{color:var(--red);}
+.ok{color:var(--green);}
+.row{display:flex;gap:12px;flex-wrap:wrap;}
+.col{flex:1;min-width:280px;}
+.tag{display:inline-block;background:var(--dim);color:#000;padding:1px 8px;font-size:0.7rem;letter-spacing:2px;font-weight:bold;margin-right:6px;}
+.tag.alpha{background:#4a9eff;color:#000;}
+.tag.bravo{background:#ff9a3c;color:#000;}
+.smsbox{background:#000;border:1px solid var(--dim);padding:10px 12px;margin:6px 0;font-size:0.85rem;color:#ccc;white-space:pre-wrap;}
+.checkbox{color:#666;}
+hr{border:none;border-top:1px dashed #222;margin:18px 0;}
+@media print{body{background:#fff;color:#000;max-width:none;}.panel,.step,.smsbox{background:#fff;border-color:#999;}h1,h2,.tag{color:#000;}td.val,.step-title,li strong{color:#000;}.code{background:#eee;color:#000;border-color:#666;}}
+</style>
+</head>
+<body>
+
+<h1>⬛ GM CHEATSHEET // OP-MOON-LANDING ⬛</h1>
+
+<!-- ═══════════ PANIKK-PANEL ═══════════ -->
+<h2>🚨 Panikk-panel — alt du trenger på 3 sek</h2>
+<div class="panel red">
+<table>
+<tr><td class="label">Mission Control SMS</td><td class="val">+47 980 21 035</td></tr>
+<tr><td class="label">Login-portal</td><td class="val">op-moon-landing.netlify.app</td></tr>
+<tr><td class="label">Mitt SMS-dashbord</td><td class="val">op-moon-landing.netlify.app/SMS.html</td></tr>
+<tr><td class="label">Live scoreboard (jsonbin)</td><td class="val">jsonbin.io → bin <span class="code">69bbaf63aa77b81da9facb74</span></td></tr>
+<tr><td class="label">Deadline (hardkodet)</td><td class="val">13:55 lokal tid (Bukarest)</td></tr>
+</table>
+</div>
+
+<div class="row">
+<div class="col">
+<div class="panel gold">
+<strong style="color:var(--gold);letter-spacing:2px;">ALLE KODER</strong>
+<table>
+<tr><td class="label">Login Alpha</td><td class="val"><span class="code">ALPHA-77</span></td></tr>
+<tr><td class="label">Login Bravo</td><td class="val"><span class="code">BRAVO-99</span></td></tr>
+<tr><td class="label">Transit clearance</td><td class="val"><span class="code">ORBITA-OK</span></td></tr>
+<tr><td class="label">Phase 2 (fra bartender)</td><td class="val"><span class="code">PRUNARIU-61</span></td></tr>
+<tr><td class="label">Final extraction</td><td class="val"><span class="code">LAIKA</span></td></tr>
+</table>
+</div>
+</div>
+<div class="col">
+<div class="panel">
+<strong style="color:#fff;letter-spacing:2px;">LOKASJONER</strong>
+<table>
+<tr><td class="label"><span class="tag alpha">A</span> Phase 1</td><td class="val">Piața Revoluției<br><span style="color:#888;font-weight:normal;">Memorial of Rebirth</span></td></tr>
+<tr><td class="label"><span class="tag bravo">B</span> Phase 1</td><td class="val">Piața Universității</td></tr>
+<tr><td class="label"><span class="tag alpha">A</span> Transit</td><td class="val">Biserica Rusă<br><span style="color:#888;font-weight:normal;">Russian Church (løkkupler)</span></td></tr>
+<tr><td class="label"><span class="tag bravo">B</span> Transit</td><td class="val">Banca Naţională<br><span style="color:#888;font-weight:normal;">Søyle-fasade</span></td></tr>
+<tr><td class="label">Phase 2 (begge)</td><td class="val">Cross Fire<br><span style="color:#888;font-weight:normal;">Strada Zarafi 5</span></td></tr>
+<tr><td class="label">Final extraction</td><td class="val">Linea / Closer to the Moon</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<!-- ═══════════ KJØREPLAN ═══════════ -->
+<h2>📋 Kjøreplan — kronologisk</h2>
+
+<div class="step">
+<div class="step-num">T-30 min // PRE-FLIGHT (i leiligheten, før gjestene kommer)</div>
+<ul>
+<li><span class="checkbox">☐</span> Skriv ut og legg klart: 2 aktiveringskonvolutter (alpha/bravo), 2 PRUNARIU-61-konvolutter (én per lag, til bartenderen), 2 feltordre-01, 2 bartender-instrukser</li>
+<li><span class="checkbox">☐</span> 2,5L "Bomba" (Ciucaș-blanding) klar i kjøkkenet</li>
+<li><span class="checkbox">☐</span> Min telefon ladet, SMS-dashbord åpent på laptop/nettbrett</li>
+<li><span class="checkbox">☐</span> Sjekk at <span class="kbd">SMS.html</span> melding #7 (CONTINGENCY BETA) har en backup-bar fylt inn</li>
+<li><span class="checkbox">☐</span> Sjekk at jsonbin er nullstilt: <span class="code">{"alpha":[],"bravo":[]}</span></li>
+<li><span class="checkbox">☐</span> Avtal med bartender på Cross Fire (når jeg kommer) at shots er forhåndsbetalt</li>
+</ul>
+</div>
+
+<div class="step">
+<div class="step-num">T+0 // ACTIVATION (i leiligheten)</div>
+<div class="step-title">Del ut aktiveringskonvolutter til hvert lag</div>
+<div class="step-action">→ De finner URL + login-kode (<span class="code">ALPHA-77</span> / <span class="code">BRAVO-99</span>) i konvolutten</div>
+<div class="step-action">→ Logger inn på portalen, ser brief, drikker Bomba, fremstilles for Flight Director (meg)</div>
+<div class="step-note">Min jobb: Holde Flight Director-rollen, godkjenne Bomba-tømming, sende dem ut til Phase 1</div>
+</div>
+
+<div class="step">
+<div class="step-num">T+? // PHASE 1 (monumenter)</div>
+<div class="step-title">Lagene tar bilde foran sitt monument og sender til meg</div>
+<div class="step-action"><span class="tag alpha">A</span> Piața Revoluției — danner "Poteten/Obelisken"</div>
+<div class="step-action"><span class="tag bravo">B</span> Piața Universității — danner "Korset"</div>
+<div class="step-note">Min jobb: Bekrefte mottak. De går videre til Transit-sone umiddelbart (skal IKKE vente på svar her).</div>
+</div>
+
+<div class="step">
+<div class="step-num">T+? // TRANSIT-SONE (BUFFER for meg)</div>
+<div class="step-title">Lagene venter på klareringskode mens jeg drar til Cross Fire</div>
+<div class="step-action"><span class="tag alpha">A</span> Russisk kirke — sender bilde + "AWAITING CLEARANCE"</div>
+<div class="step-action"><span class="tag bravo">B</span> Nasjonalbanken — sender bilde + "AWAITING CLEARANCE"</div>
+<div class="step-action ok">→ Jeg drar til Cross Fire og briefer bartenderen (gir ham bartender-instruks-arket og PRUNARIU-61-konvolutten)</div>
+<div class="step-action ok">→ Når bartenderen er klar: Send <span class="code">ORBITA-OK</span>-mal til begge lag (DIREKTE GO)</div>
+<div class="step-note warn">⚠ Hvis jeg trenger mer tid: Bruk STALLING-mal først, send GO-mal etter X minutter. Begge lag skal få SAMME forsinkelse.</div>
+</div>
+
+<div class="step">
+<div class="step-num">T+? // PHASE 2 — Cross Fire</div>
+<div class="step-title">Lagene gjør verbal utveksling med bartender</div>
+<div class="step-action">Lag: <em>"Sunt o prinţesă dulce"</em> (sunt o prin-tse-suh dul-che)</div>
+<div class="step-action">Bartender: <em>"Ce cauţi?"</em></div>
+<div class="step-action">Lag: <em>"Căutăm demnitate"</em> (kuh-oo-tuhm dem-ni-tah-te)</div>
+<div class="step-action ok">→ Bartender gir 1 shot/person + forseglet konvolutt med <span class="code">PRUNARIU-61</span></div>
+<div class="step-note">Min jobb: Ingenting med mindre noe går galt. Lagene laster opp video til Telegram.</div>
+</div>
+
+<div class="step">
+<div class="step-num">T+? // SIDEOPPDRAG (4 av 6)</div>
+<div class="step-title">Lagene løser oppdrag rundt i Lipscani</div>
+<div class="step-action">Min jobb: Godkjenn bilder/video som kommer inn på Telegram. Live progress synlig på scoreboard i begge briefer.</div>
+<div class="step-note">Når et lag når 4/6 dukker Mission Control-boksen opp i deres brief med en kodefrase de skal sende.</div>
+</div>
+
+<div class="step">
+<div class="step-num">T+? // FINAL EXTRACTION-FRASE → LAIKA</div>
+<div class="step-title">Lag sender kodefrase til meg</div>
+<div class="step-action"><span class="tag alpha">A</span> <em>"Alfabetet er vanskelig. Ørnen er rastløs, hvor fanken la jeg sokken?"</em></div>
+<div class="step-action"><span class="tag bravo">B</span> <em>"Bravo ligner på bravur. Ørnen er rastløs, hvor fanken la jeg sokken?"</em></div>
+<div class="step-action ok">→ Jeg svarer med <span class="code">LAIKA</span> (bruk "DIREKTE GO"-mal i SMS.html)</div>
+</div>
+
+<div class="step">
+<div class="step-num">T+? // FINISH — Linea / Closer to the Moon</div>
+<div class="step-title">Første lag som sender bilde fra heisen vinner</div>
+<div class="step-action ok">Jeg er på taket og venter med diplomer + drinks</div>
+<div class="step-note warn">⚠ Hardkodet deadline: 13:55 lokal tid (Bukarest). Sjekk at lagenes telefoner har auto-tidssone på.</div>
+</div>
+
+<!-- ═══════════ SMS-FLYT ═══════════ -->
+<h2>📡 SMS-flyt — hvilken mal når</h2>
+
+<div class="panel">
+<table>
+<tr><td class="label">📥 "AWAITING CLEARANCE" (+ bilde)</td><td>📤 ORBITA-OK-mal (DIREKTE GO eller STALLING)</td></tr>
+<tr><td class="label">📥 Kodefrase (sokken/ørnen)</td><td>📤 LAIKA-mal (DIREKTE GO eller STALLING)</td></tr>
+<tr><td class="label">📥 De maser uten grunn</td><td>📤 RADIOTAUSHET-mal (#6)</td></tr>
+<tr><td class="label">📥 Linea er stengt</td><td>📤 CONTINGENCY BETA (#7) — backup-bar</td></tr>
+<tr><td class="label">📥 Fase 1-bilde</td><td>📤 Bare bekreft. Ingen kode her — de går videre selv.</td></tr>
+</table>
+</div>
+
+<!-- ═══════════ KONTINGENSER ═══════════ -->
+<h2>⚠ Kontingenser</h2>
+
+<div class="panel red">
+<ul>
+<li><strong>Bartender ikke på jobb:</strong> Bartender-instruks-arket ligger i bartenderkonvolutten. Den nye bartenderen får arket, samme prosedyre.</li>
+<li><strong>Cross Fire stengt:</strong> Plan B-bar avtalt på forhånd. Reis dit, brief, og bruk en custom melding (lag ny i SMS.html → "Lagre i hvelvet") for å sende ny adresse.</li>
+<li><strong>Linea stengt:</strong> Bruk CONTINGENCY BETA-malen (#7) i SMS.html — fyll inn ny endebar.</li>
+<li><strong>Telefonen min dør:</strong> Ekstra batteripakke i sekken. Backup-telefon til [PLACEHOLDER].</li>
+<li><strong>Et lag står helt fast:</strong> Send hint manuelt via SMS. Bruk RADIOTAUSHET hvis du trenger å kjøpe deg tid.</li>
+<li><strong>Et lag har clearet før det andre på Phase 1:</strong> Hold dem på Transit-sonen via STALLING-mal til begge er klare. Send ORBITA-OK til begge samtidig.</li>
+<li><strong>Scoreboard fryser/jsonbin nede:</strong> Spillet går videre uansett — scoreboardet er bare visuelt. Be lagene fortsette.</li>
+<li><strong>YouTube-video laster ikke:</strong> Be dem hoppe over og lese teksten under. Innholdet er ikke kritisk.</li>
+</ul>
+</div>
+
+<!-- ═══════════ POST-FLIGHT ═══════════ -->
+<h2>🏁 Post-flight</h2>
+
+<div class="panel">
+<ul>
+<li><span class="checkbox">☐</span> Diplom til vinnerlag (taperlaget betaler første runde)</li>
+<li><span class="checkbox">☐</span> Diplom til taperlag</li>
+<li><span class="checkbox">☐</span> Cleare jsonbin: <span class="code">{"alpha":[],"bravo":[]}</span> (hvis du vil kjøre på nytt)</li>
+<li><span class="checkbox">☐</span> Be lagene cleare localStorage på telefonen om de skal kjøre igjen</li>
+</ul>
+</div>
+
+<hr>
+<div style="text-align:center;color:#444;font-size:0.75rem;letter-spacing:3px;padding:10px 0;">
+⬛ EYES ONLY — FLIGHT DIRECTOR ⬛
+</div>
+
+</body>
+</html>
