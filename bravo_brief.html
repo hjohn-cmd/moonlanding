@@ -598,7 +598,7 @@ async function runBootSequence(){
   await addLine('',300);
   sndBootDone();
   await addLine('⬛  TILGANG INNVILGET — WELCOME, KOSMONAUT  ⬛',200,'red');
-  setTimeout(function(){document.getElementById('boot').classList.add('hidden');main.classList.add('visible');footer.style.display='block';},1400);
+  setTimeout(function(){document.getElementById('boot').classList.add('hidden');main.classList.add('visible');footer.style.display='block';restoreState();},1400);
 }
 runBootSequence();
 
@@ -614,7 +614,7 @@ function verifyPhase2Code(){
     f.style.borderColor='var(--green)';f.style.color='var(--green)';f.disabled=true;
     btn.style.background='var(--green)';btn.style.color='#000';btn.textContent='ÅPENT';btn.disabled=true;
     pb.classList.add('completed');fs.textContent='[FULLFØRT]';fs.classList.add('ok');
-    phase2Done=true;sbUpdate();
+    phase2Done=true;sbUpdate();saveState();
     setTimeout(function(){
       s.textContent='// FLIGHT MANUAL DEKRYPTERT';
       tc.style.display='flex';tc.style.animation='decryptReveal 0.8s forwards';
@@ -642,7 +642,7 @@ function checkClearance(){
     status.textContent='// KLARERING GODKJENT — FORSYNINGSDEPOT ÅPNET';
     document.getElementById('clearance-code').disabled=true;
     document.getElementById('transit-zone').querySelector('button').disabled=true;
-    phase1Done=true;sbUpdate();
+    phase1Done=true;sbUpdate();saveState();
     setTimeout(function(){
       document.getElementById('transit-zone').style.display='none';
       var p2=document.getElementById('phase-2-box');
@@ -705,6 +705,7 @@ function handleCheckbox(cb,lblId,infoId,taskNum){
     c.style.display='block';
     setTimeout(function(){c.scrollIntoView({behavior:'smooth',block:'start'});},250);
   }
+  saveState();
 }
 
 // ── LAIKA ─────────────────────────────────────────────────────
@@ -717,6 +718,7 @@ function verifyLaika(){
     status.textContent='// NØKKEL GODKJENT — INITIERER OPPSKYTNINGSSEKVENS...';
     document.getElementById('laika-input').disabled=true;
     document.getElementById('laika-btn').disabled=true;
+    laikaUnlocked=true;saveState();
     setTimeout(function(){document.getElementById('mc-comms').style.display='none';runUnlockAnimation();},1200);
   }else{
     sndError();
@@ -734,7 +736,8 @@ document.addEventListener('DOMContentLoaded',function(){
 
 // ── SCOREBOARD ────────────────────────────────────────────────
 var SB_BIN='69bbaf63aa77b81da9facb74',SB_KEY='$2a$10$waiHsAy4JBoQrL3XVPq7heSray8bHcH/61dUhudWfJXE6kyHZ7qvq',SB_TEAM='bravo';
-var phase1Done=false,phase2Done=false;
+var phase1Done=false,phase2Done=false,laikaUnlocked=false;
+var STATE_KEY='op-moon-state-'+SB_TEAM;
 async function sbFetch(){
   try{var r=await fetch('https://api.jsonbin.io/v3/b/'+SB_BIN+'/latest',{headers:{'X-Master-Key':SB_KEY}});
   if(!r.ok)return null;var d=await r.json();return d.record;}catch(e){return null;}}
@@ -752,7 +755,7 @@ function sbToggle(){
   var i=document.getElementById('sb-toggle-icon');
   if(w.classList.toggle('sb-expanded')){i.textContent='▼';}else{i.textContent='▲';}}
 async function resetPhaseScores(){
-  phase1Done=false;phase2Done=false;
+  phase1Done=false;phase2Done=false;saveState();
   var cur=await sbFetch();
   if(!cur)cur={alpha:[],bravo:[]};
   cur[SB_TEAM]=(cur[SB_TEAM]||[]).filter(function(x){return x!==0&&x!==-1;});
@@ -771,6 +774,59 @@ function sbRender(data){
   document.getElementById('sb-ping').textContent=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2)+':'+('0'+now.getSeconds()).slice(-2);}
 async function sbPoll(){var d=await sbFetch();sbRender(d);}
 sbPoll();setInterval(sbPoll,30000);
+
+// ── PERSISTENCE (localStorage) ────────────────────────────────
+function saveState(){
+  try{localStorage.setItem(STATE_KEY,JSON.stringify({ct:Array.from(completedTasks),p1:phase1Done,p2:phase2Done,cs:commsShown,lu:laikaUnlocked}));}catch(e){}
+}
+function restoreState(){
+  var raw;try{raw=localStorage.getItem(STATE_KEY);}catch(e){return;}
+  if(!raw)return;
+  var s;try{s=JSON.parse(raw);}catch(e){return;}
+  if(s.p1){
+    phase1Done=true;
+    var tz=document.getElementById('transit-zone');if(tz)tz.style.display='none';
+    var pb=document.getElementById('phase-2-box');if(pb)pb.style.display='block';
+  }
+  if(s.p2){
+    phase2Done=true;
+    var f=document.getElementById('override-code'),btn=document.getElementById('auth-btn'),
+        st=document.getElementById('auth-status'),fs=document.getElementById('fase2-status'),
+        pb2=document.getElementById('phase-2-box');
+    if(st){st.style.color='var(--green)';st.textContent='// FLIGHT MANUAL DEKRYPTERT';}
+    if(f){f.style.borderColor='var(--green)';f.style.color='var(--green)';f.disabled=true;}
+    if(btn){btn.style.background='var(--green)';btn.style.color='#000';btn.textContent='ÅPENT';btn.disabled=true;}
+    if(pb2)pb2.classList.add('completed');
+    if(fs){fs.textContent='[FULLFØRT]';fs.classList.add('ok');}
+    var tc=document.getElementById('classified-tasks');if(tc)tc.style.display='flex';
+  }
+  if(s.ct&&s.ct.length){
+    s.ct.forEach(function(n){
+      completedTasks.add(n);
+      var lbl=document.getElementById('lbl-'+n),info=document.getElementById('info-'+n);
+      if(lbl){var cb=lbl.querySelector('input.task-checkbox');if(cb)cb.checked=true;lbl.classList.add('is-checked');}
+      if(info)info.style.display='block';
+    });
+    checkedCount=completedTasks.size;
+    updateProgress();
+  }
+  if(s.cs&&!s.lu){
+    commsShown=true;
+    var c=document.getElementById('mc-comms');if(c)c.style.display='block';
+  }
+  if(s.lu){
+    laikaUnlocked=true;
+    var li=document.getElementById('laika-input'),lb=document.getElementById('laika-btn'),
+        mc=document.getElementById('mc-comms'),m7=document.getElementById('maal-7-wrap'),
+        anim=document.getElementById('unlock-anim');
+    if(li)li.disabled=true;
+    if(lb)lb.disabled=true;
+    if(mc)mc.style.display='none';
+    if(m7)m7.style.display='block';
+    if(anim){anim.style.display='flex';anim.innerHTML='<div class="unlock-line final" style="opacity:1;animation:none;">&gt; MÅL 7 AVKLASSIFISERT // GJENOPPTATT FRA TIDLIGERE SESJON</div>';}
+  }
+  sbUpdate();
+}
 
 // ── UNLOCK ANIMATION ──────────────────────────────────────────
 async function runUnlockAnimation(){
