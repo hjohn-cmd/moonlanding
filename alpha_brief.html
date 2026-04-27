@@ -259,7 +259,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
 </div>
 <div id="main">
   <div id="progress-tracker">
-    <div class="progress-label"><span>Oppdragsstatus // Lag Alpha</span><span id="progress-count">0 / 6 Mål Fullført</span></div>
+    <div class="progress-label"><span>Oppdragsstatus // Lag Alpha</span><span id="progress-count">0 / 7 Mål Fullført</span></div>
     <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
     <div class="progress-markers">
       <div class="progress-pip" id="pip-1"></div>
@@ -270,6 +270,7 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
       </div>
       <div class="progress-pip" id="pip-5"></div>
       <div class="progress-pip" id="pip-6"></div>
+      <div class="progress-pip" id="pip-7"></div>
     </div>
   </div>
   <div class="header">
@@ -375,14 +376,24 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
         </div>
       </div>
       <div id="classified-tasks">
-        <div class="tasks-header">&gt; NEDLASTING FULLFØRT: FLIGHT MANUAL // NAVIGASJONSKALIBRERING<br>&gt; UTFØR MINST 4 AV DE 6 MÅLENE NEDENFOR.<br>&gt; MÅL 7 ER OBLIGATORISK FØR OPPSKYTNING OG LÅSES OPP VED 4 FULLFØRTE MÅL + GODKJENNING FRA MISSION CONTROL.</div>
+        <div class="tasks-header">&gt; NEDLASTING FULLFØRT: FLIGHT MANUAL // NAVIGASJONSKALIBRERING<br>&gt; UTFØR MINST 4 AV DE 7 MÅLENE NEDENFOR.<br>&gt; MÅL Ω ER OBLIGATORISK FØR OPPSKYTNING OG LÅSES OPP VED 4 FULLFØRTE MÅL + GODKJENNING FRA MISSION CONTROL.</div>
         <div class="choose-4-banner">
           <span class="choose-4-num">4</span>
-          <span class="choose-4-text">AV 6 MÅL MÅ FULLFØRES<br><span style="font-size:11px;letter-spacing:2px;color:var(--text-dim);">VELG FRITT — MÅL 7 ER OBLIGATORISK</span></span>
+          <span class="choose-4-text">AV 7 MÅL MÅ FULLFØRES<br><span style="font-size:11px;letter-spacing:2px;color:var(--text-dim);">VELG FRITT — MÅL Ω ER OBLIGATORISK</span></span>
         </div>
         <div class="countdown-bar" id="countdown-bar">
           <span class="countdown-num" id="countdown-num">4</span>
           <span class="countdown-label" id="countdown-label">gjenstår</span>
+        </div>
+        <!-- BONUS: PHOTO BOUNTY (IKKE EN AV DE 7 VALGFRIE) -->
+        <div class="mission-task" id="task-bounty" style="border-left:3px solid var(--gold);background:linear-gradient(135deg,#0a0804,#0c0a06);">
+          <span class="task-number" style="color:rgba(201,168,76,0.10);">★</span>
+          <div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);margin-bottom:8px;text-transform:uppercase;">⚠ BONUS-OPPDRAG // EKSTRAKURRIKULÆRT ⚠</div>
+          <h3 style="color:var(--gold);">★ PHOTO BOUNTY // KONTRA-ETTERRETNING</h3>
+          <p>Direktoratet ønsker overvåkningsmateriale på det andre laget. Skaff oss et stealth-bilde av minst ett av deres medlemmer — uten at de er klar over det.</p>
+          <div class="req" style="color:var(--gold);border-left:2px solid var(--gold);">&gt; KRAV: Bildet må vise ansikt og være tatt fra avstand. <strong>STEALTH er imperativt.</strong> Møte ansikt-til-ansikt på Cross Fire eller andre fellessoner kvalifiserer IKKE — det skal være et reelt overvåkningsbilde, tatt mens dere selv ikke er observert. Sendes Mission Control via Telegram.</div>
+          <div class="req" style="color:var(--gold);border-left:2px solid var(--gold);margin-top:10px;">&gt; PREMIE: Vinnerlaget får én runde drinks på Linea, finansiert av motstanderlaget. Kun ett lag kan vinne — kan kun innkasseres én gang.</div>
+          <div style="font-size:11px;color:#999;margin-top:12px;font-style:italic;">▶ Dette er et bonusoppdrag. Det erstatter <strong>IKKE</strong> noen av de 7 valgfrie målene og påvirker ikke 4-av-7-kravet.</div>
         </div>
         <!-- MÅL 1 -->
         <div class="mission-task" id="task-1"><span class="task-number">01</span>
@@ -418,19 +429,27 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
         </div>
         <!-- MÅL 5 -->
         <div class="mission-task" id="task-5"><span class="task-number">05</span>
-          <h3>MÅL 5 // Historisk Telemetri — Lipscani</h3>
-          <p>Finn et tydelig spor fra The Red Decade (kommunisttiden) — arkitektur, et skilt, et symbol.</p>
-          <div class="req">&gt; KRAV: Foto av objektet sendes Base. Det legges langt mer vekt på en overbevisende og engasjerende forklaring i Telegram enn akkurat hva dere har valgt å fotografere — vær kreative.</div>
+          <h3>MÅL 5 // Tidskapselen — Hanul lui Manuc</h3>
+          <p>Infiltrer bakgården til Europas eldste fungerende hotellbygning (i dag en restaurant) på Strada Franceză 62.</p>
+          <div class="req">&gt; KRAV: Lagbilde ved vinfatene eller tretrappene. Foran inngangen til bakgården godkjennes, men da skal innlevelsen i poseringen være 100%. Se ut som dere flykter fra 1808 (lykke til!). Ingen smil!</div>
           <div class="task-complete"><label class="checkbox-label" id="lbl-5"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-5','info-5',5)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
-          <div class="infoboks" id="info-5"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Det historiske sentrumet du står i nå overlevde bare med et nødskrik. På 1980-tallet ble diktatoren Nicolae Ceaușescu besatt av å bygge sitt absurde Parlamentspalass. For å få plass, jevnet han en femtedel av det historiske București med jorden – inkludert titusenvis av hjem og historiske monumenter. Gamlebyen ble kun spart fordi regimet innså at det ville bli for dyrt og komplisert å flytte det massive nettverket av industri og underjordiske rør som lå her. I stedet valgte de å bygge gigantiske, grå betongblokker rundt hele bydelen for å "gjemme bort" den borgerlige arkitekturen.</div></div>
+          <div class="infoboks" id="info-5"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Bygget i 1808 av den styrtrike armenske kjøpmannen (og diplomaten/spionen) Emanuel Mârzaian, bedre kjent som Manuc Bei. Dette var opprinnelig byens viktigste vertshus og fungerte som det absolutte sentrum for handel på Balkan. I dag huser den historiske bygningen en av byens mest kjente restauranter. Den spektakulære arkitekturen med de massive trebalkongene rundt en lukket bakgård var i sin tid designet for å beskytte gjester og verdisaker mot røvere. Det var nettopp her inne, i dypeste hemmelighet, at fredsavtalen som avsluttet den russisk-tyrkiske krigen ble forhandlet frem og signert i 1812.</div></div>
         </div>
         <!-- MÅL 6 -->
         <div class="mission-task" id="task-6"><span class="task-number">06</span>
-          <h3>MÅL 6 // Tidskapselen — Hanul lui Manuc</h3>
-          <p>Infiltrer bakgården til Europas eldste fungerende hotellbygning (i dag en restaurant) på Strada Franceză 62.</p>
-          <div class="req">&gt; KRAV: Lagbilde ved vinfatene eller tretrappene. Foran inngangen til bakgården godkjennes, men da skal innlevelsen i poseringen være 100%. Se ut som dere flykter fra 1808 (lykke til!). Ingen smil!</div>
+          <h3>MÅL 6 // Vertikal Akselerasjon — Trapperakett</h3>
+          <p>Identifiser en lang trapp i bybildet — Pasajul Macca-Vilacrosse-buen, en kirketrapp, en bygård, hva som helst med tydelig vertikal forflytning.</p>
+          <div class="req">&gt; KRAV: Lagbilde i "rakettoppskytning"-formasjon — på linje oppover trappen, armene strakt rett opp, blikket mot stratosfæren. Innlevelsen avgjør om Direktoratet vurderer oppskytningen som vellykket.</div>
           <div class="task-complete"><label class="checkbox-label" id="lbl-6"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-6','info-6',6)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
-          <div class="infoboks" id="info-6"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Bygget i 1808 av den styrtrike armenske kjøpmannen (og diplomaten/spionen) Emanuel Mârzaian, bedre kjent som Manuc Bei. Dette var opprinnelig byens viktigste vertshus og fungerte som det absolutte sentrum for handel på Balkan. I dag huser den historiske bygningen en av byens mest kjente restauranter. Den spektakulære arkitekturen med de massive trebalkongene rundt en lukket bakgård var i sin tid designet for å beskytte gjester og verdisaker mot røvere. Det var nettopp her inne, i dypeste hemmelighet, at fredsavtalen som avsluttet den russisk-tyrkiske krigen ble forhandlet frem og signert i 1812.</div></div>
+          <div class="infoboks" id="info-6"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Bukarest sin gamleby er bygget i lag — bokstavelig talt. Romerne, ottomanene, fanariotene, habsburgerne og kommunistene har alle satt sine spor i de samme gatene, ofte oppå hverandre. Det betyr at trappene du ser ofte er pussestempler fra forskjellige århundrer. Pasajul Macca-Vilacrosse, byens vakreste passasje, ble bygget i 1891 i jugendstil for å etterligne Galleria Vittorio Emanuele i Milano. Glasstaket er et sjeldent overlevende eksempel etter at Ceaușescu rev ned størstedelen av området rundt på 1980-tallet.</div></div>
+        </div>
+        <!-- MÅL 7 -->
+        <div class="mission-task" id="task-7"><span class="task-number">07</span>
+          <h3>MÅL 7 // Optisk Speilsignal — Refleksjon</h3>
+          <p>Lokaliser en refleksjonsflate i bybildet — kafévindu, polert metall, en pytt, utstillingsvindu, billakk. Hva som helst som speiler.</p>
+          <div class="req">&gt; KRAV: Hele laget skal være synlig <strong>i refleksjonen</strong> — ingen direkte selfie. Refleksjonen er bevis på at dere fortsatt eksisterer i den synlige verden, og ikke har blitt deportert til en annen dimensjon.</div>
+          <div class="task-complete"><label class="checkbox-label" id="lbl-7"><input type="checkbox" class="task-checkbox" onchange="handleCheckbox(this,'lbl-7','info-7',7)"><span class="checkbox-custom"></span><span class="checkbox-text">MÅL FULLFØRT</span></label></div>
+          <div class="infoboks" id="info-7"><div class="info-label">▶ HISTORISK TELEMETRI // DEKRYPTERT</div><div class="info-content">Optisk overvåkning og speilsignaler var standard tradecraft for Securitate, det fryktede rumenske hemmelige politiet under Ceaușescu. Operatører lærte å kommunisere via reflekser i butikkvinduer og bilspeil for å unngå direktekontakt. På 1980-tallet var det estimert at én av tre voksne i Romania var registrert som Securitate-informant. Bukarests gamleby er fortsatt fylt med vinduer og glassflater — perfekt for både moderne kameraer og gammel paranoia.</div></div>
         </div>
         <!-- COMMS -->
         <div id="mc-comms">
@@ -451,13 +470,13 @@ body::after{content:'';position:fixed;inset:0;z-index:1001;pointer-events:none;b
             <div id="laika-status"></div>
           </div>
         </div>
-        <!-- MÅL 7 -->
+        <!-- MÅL Ω -->
         <div id="maal-7-wrap">
           <div class="maal7-unlock-anim" id="unlock-anim"></div>
           <div class="mission-task-final">
-            <h3>MÅL 7 // OPPSKYTNINGSRAMPEN — FINAL EXTRACTION</h3>
-            <p>Finn utestedet "Linea / Closer to the Moon". Infiltrer gantry-kranen (heisen).</p>
-            <div class="req">&gt; KRAV: Første lag som sender bilde av heisdøren fra innsiden vinner konkurransen — Flight Director venter på toppen.</div>
+            <h3>MÅL Ω // OPPSKYTNINGSRAMPEN — FINAL EXTRACTION</h3>
+            <p>Finn utestedet "Linea / Closer to the Moon" og naviger laget til taket.</p>
+            <div class="req">&gt; KRAV: Hele laget skal være på taket. Ta fellesvideo med toast og frasen <strong>"Operation Moon Landing — eagle has landed"</strong>. Første lag som sender video til Mission Control vinner.</div>
             <div class="infoboks-final">
               <div class="info-label" style="color:var(--red);">▶ MISSION ACCOMPLISHED // AVKLASSIFISERT</div>
               <div class="info-content">MISSION ACCOMPLISHED. Dere har overlevd g-kreftene, navigert gjennom fiendtlig territorium, og unngått kontraspionasjen. "Closer to the Moon" er ikke bare et navn, det er det offisielle endepunktet for den rumenske romfartsopplæringen. Finn Flight Director på taket. Rapporter for umiddelbar de-briefing, rehydrering med sterke væsker, og den offisielle utdelingen av vitnemål. Første runde betales av taperlaget.</div>
@@ -668,9 +687,9 @@ var checkedCount=0,commsShown=false;
 var completedTasks=new Set();
 function updateProgress(){
   var count=completedTasks.size;
-  document.getElementById('progress-fill').style.width=(count/6*100)+'%';
-  document.getElementById('progress-count').textContent=count+' / 6 Mål Fullført';
-  for(var i=1;i<=6;i++){
+  document.getElementById('progress-fill').style.width=(count/7*100)+'%';
+  document.getElementById('progress-count').textContent=count+' / 7 Mål Fullført';
+  for(var i=1;i<=7;i++){
     var p=document.getElementById('pip-'+i);
     if(p){completedTasks.has(i)?p.classList.add('done'):p.classList.remove('done');}
   }
@@ -823,7 +842,7 @@ function restoreState(){
     if(lb)lb.disabled=true;
     if(mc)mc.style.display='none';
     if(m7)m7.style.display='block';
-    if(anim){anim.style.display='flex';anim.innerHTML='<div class="unlock-line final" style="opacity:1;animation:none;">&gt; MÅL 7 AVKLASSIFISERT // GJENOPPTATT FRA TIDLIGERE SESJON</div>';}
+    if(anim){anim.style.display='flex';anim.innerHTML='<div class="unlock-line final" style="opacity:1;animation:none;">&gt; MÅL Ω AVKLASSIFISERT // GJENOPPTATT FRA TIDLIGERE SESJON</div>';}
   }
   sbUpdate();
 }
@@ -840,7 +859,7 @@ async function runUnlockAnimation(){
     {t:'> NETTVERKSTILKOBLING SIKRET...',f:false},
     {t:"> FINALE KOORDINATER: 44°25⁒58″N 26°05⁒49″E",f:false},
     {t:'> CLEARANCE LEVEL: OMEGA',f:false},
-    {t:'> ███████████████████ MÅL 7 AVKLASSIFISERT',f:true}
+    {t:'> ███████████████████ MÅL Ω AVKLASSIFISERT',f:true}
   ];
   for(var i=0;i<lines.length;i++){
     await new Promise(function(r){setTimeout(r,320);});
